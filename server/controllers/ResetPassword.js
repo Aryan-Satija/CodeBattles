@@ -25,7 +25,7 @@ exports.resetPasswordToken = async (req, res) => {
 		);
 		console.log("DETAILS", updatedDetails);
 
-		const url = `http://localhost:4000/login/reset-password/${token}`;
+		const url = `http://localhost:3000/login/update-password/${token}`;
 
 		await mailSender(
 			email,
@@ -51,22 +51,22 @@ exports.resetPassword = async (req, res) => {
 		const { password, confirmPassword, token } = req.body;
 
 		if (confirmPassword !== password) {
-			return res.json({
+			return res.status(400).json({
 				success: false,
-				message: "Password and Confirm Password Does not Match",
+				message: "Passwords don't Match",
 			});
 		}
 		const userDetails = await User.findOne({ token: token });
 		if (!userDetails) {
-			return res.json({
+			return res.status(401).json({
 				success: false,
-				message: "Token is Invalid",
+				message: "Invalid Token Detected",
 			});
 		}
 		if (!(userDetails.resetPasswordExpires > Date.now())) {
 			return res.status(403).json({
 				success: false,
-				message: `Token is Expired, Please Regenerate Your Token`,
+				message: `Expired Token Detected`,
 			});
 		}
 		const encryptedPassword = await bcrypt.hash(password, 10);

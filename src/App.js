@@ -9,6 +9,7 @@ import SignUp from "./pages/Signup";
 import Dashboard from "./pages/dashboard";
 import VerifyEmail from "./pages/verifyEmail";
 import ResetPassword from "./pages/resetPassword";
+import UpdatePassword from "./pages/updatePassword";
 function App() {
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter overflow-x-hidden">
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
         <Route exact path="/dashboard" element={<Dashboard/>}/>
         <Route exact path="/login/reset-password" element={<ResetPassword/>}/>
+        <Route exact path="/login/update-password/:id" element={<UpdatePassword/>}/>
       </Routes>
     </div>
   );
