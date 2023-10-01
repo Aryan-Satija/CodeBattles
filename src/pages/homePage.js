@@ -20,6 +20,7 @@ import { useState, useEffect } from "react";
 import { HomePageExplore } from "../data/tagData";
 import { apiConnector } from "../services/apiConnector";
 import { CATEGORIES } from '../services/apis.js'
+import { useSelector } from "react-redux/es/hooks/useSelector";
 function Home(){
     const tags = [
         "Free",
@@ -28,6 +29,10 @@ function Home(){
         "Skills paths",
         "Career paths"
     ];
+    const signupData = useSelector((state)=>{
+        return state.auth
+    });
+    console.log(signupData);
     const [categories, setCategories] = useState([]);
     async function fetchCategories(){
         try{
