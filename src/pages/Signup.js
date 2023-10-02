@@ -58,9 +58,9 @@ function SignUp(){
                 });
         }
     }
-    return(<div className="w-screen h-screen bg-richblack-900 flex place-items-center">
-    <div className="w-2/3 mx-auto flex items-center gap-10">
-        <div className="w-[70%]">
+    return(<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
+    <div className="w-11/12 mx-auto flex flex-col md:flex-row items-center gap-10">
+        <div className="w-[100%] md:w-[70%]">
             <div className="text-2xl text-richblack-5 font-bold">Welcome Back</div>
             <p className="text-richblack-500">Discover Your Passion,</p>
             <p style={{fontFamily:'Edu SA Beginner'}}className="text-blue-100">Be Unstoppable</p>
@@ -148,9 +148,9 @@ function SignUp(){
                 </div>
             </form>
         </div>
-        <div className="relative w-full">
-            <img src={frame} width={450} height={450} className="absolute z-10 top-[-12rem] left-[3.5rem]"/>
-            <img src={signup} width={450} height={450} className="absolute z-10 top-[-13rem] left-10"/>
+        <div className="w-[500px] relative">
+                <img src={frame} className="absolute top-[-1rem] left-[1rem]"/>
+                <img src={signup} className="relative z-1"/>
         </div>
     </div>
 </div>)
