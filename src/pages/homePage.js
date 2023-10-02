@@ -62,7 +62,7 @@ function Home(){
             </Link>
             <div className="w-[90%] text-4xl font-bold mt-[38px] text-center">Empower Your Future with <HighlightedText text={'Coding Skills'}/></div>
             <div className="text-sm mt-4 text-center font-semibold text-richblack-300 max-w-[800px]">With our online coding courses, you can learn at your own pace, from anywhere in the world, and get access to a wealth of resources, including hands-on projects, quizzes, and personalized feedback from instructors.</div>
-            <div className="flex justify-around gap-6 mt-4">
+            <div className="flex flex-col sm:flex-row justify-around gap-6 mt-4">
                 <CTAbutton linkTo={'/signup'} yellow={true}>Learn More</CTAbutton>
                 <CTAbutton linkTo={'/login'} yellow={false}>Book A Demo</CTAbutton>
             </div>
@@ -75,7 +75,7 @@ function Home(){
                 </video>
             </div>
             <CodeBlocks 
-                position= {'flex-row'}
+                position= {'flex-col md:flex-row md:items-center'}
                 title={<div className="text-4xl font-bold">Start <HighlightedText text={'coding potential'}/> with our online courses.</div>}
                 body={'Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you.'}
                 CTAbtn1 = {
@@ -93,7 +93,7 @@ function Home(){
                 color3 = {'#F8F8FF'}
             />
             <CodeBlocks 
-                position= {'flex-row-reverse'}
+                position= {'flex-col md:flex-row-reverse md:items-center md:gap-4'}
                 title={<div className="text-4xl font-bold">Unlock your <HighlightedText text={'coding in seconds'}/></div>}
                 body={`Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson.`}
                 CTAbtn1 = {
@@ -112,7 +112,7 @@ function Home(){
             />
             <div className="text-4xl font-semibold">Unlock The <HighlightedText text={"The Power Of Code"}></HighlightedText></div>
             <div className="text-base text-richblack-200">Learn to Build Anything You Can Imagine</div>
-            <div className="flex flex-row w-2/3 justify-between cursor-pointer rounded-full bg-richblack-800 px-2 py-2 my-4">
+            <div className="flex flex-col lg:flex-row lg:w-2/3 items-center justify-between cursor-pointer rounded-md lg:rounded-full bg-richblack-800 px-2 py-2 my-4">
                 {
                     tags.map((tag, index)=>{
                         return (<div onClick={()=>{
@@ -128,7 +128,7 @@ function Home(){
                 }
             </div>
         </div>
-        <div className="mx-auto w-11/12 flex justify-between items-center translate-y-16">
+        <div className="mx-auto w-11/12 flex flex-col xl:flex-row gap-4 my-4 justify-between items-center xl:translate-y-16">
             {
                 courses.map((course, index)=>{
                     return(<div key={index} className="group w-[340px] bg-richblack-800 duration-200 hover:bg-white hover:shadow-[10px_10px_0_0_rgba(255,215,10,1)] cursor-pointer">
@@ -145,23 +145,23 @@ function Home(){
             }
         </div>
         <div className="bg-[#F9F9F9] w-screen text-richblack-700 pb-[5.625rem]">
-            <div className="bg-shape h-[15rem] w-full flex items-center justify-center gap-4">
+            <div className="bg-shape h-[15rem] w-full flex flex-col-reverse md:flex-row items-center justify-center gap-4">
                 <CTAbutton linkTo={'/signup'} yellow={true}>Explore Full Catalog</CTAbutton>
                 <CTAbutton linkTo={'/login'} yellow={false}>Learn More</CTAbutton>
             </div>
-            <div className="w-11/12 mt-[5.625rem] mx-[7.5rem]">
-                <div className="flex justify-between items-center">
+            <div className="w-11/12 mx-auto mt-[5.625rem]">
+                <div className="flex flex-col gap-4 md:flex-row justify-between items-center">
                     <div className="text-richblack-900 text-4xl font-bold">
                         Get the skills you need for a <HighlightedText text={'job that is in demand.'}/>
                     </div>
                     <div className="flex flex-col justify-between items-center">
-                        <div className="flex flex-col items-start gap-2">
+                        <div className="flex flex-col md:items-start gap-2">
                             <div className="text-base text-richblack-700">The modern StudyNotion is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.</div>
                             <CTAbutton yellow={true}>Learn More</CTAbutton>
                         </div>
                     </div>
                 </div>
-                <div className="flex w-11/12 mx-auto items-center justify-between mt-[3.25rem]">
+                <div className="flex flex-col gap-4 lg:flex-row w-11/12 mx-auto items-center justify-between mt-[4rem]">
                     <div className="flex flex-col justify-between relative">
                         <div className="flex items-center gap-[1.25rem]">
                             <div style={{boxShadow: '0px 0px 62px 0px rgba(0, 0, 0, 0.12)'}}  className="w-[3.25rem] h-[3.25rem] rounded-full bg-white flex items-center justify-center">
@@ -209,16 +209,16 @@ function Home(){
                                         opacity: '0.6',
                                         background: 'var(--gradient-03, linear-gradient(118deg, #9CECFB -9.12%, #65C7F7 48.59%, #0052D4 106.3%))',
                                         filter: 'blur(34px)'
-                                    }} className="w-[750px] h-[480px] absolute right-10 top-12 -z-1">
+                                    }} className="xl:w-[750px] xl:h-[480px] absolute right-10 top-12 -z-1">
                         </div>
                         <video
                             muted
                             loop
                             autoPlay
-                            className="relative z-1 w-[710px] h-[540px]">
+                            className="relative z-1 lg:w-[710px] lg:h-[540px]">
                             <source src={timeLineVideo}></source>
                         </video>
-                        <div className="w-[510px] h-[130px] bg-caribbeangreen-700 flex p-[2.625rem] justify-between absolute bottom-[0rem] right-[95px]">
+                        <div className="w-[510px] h-[130px] bg-caribbeangreen-700 hidden xl:flex p-[2.625rem] justify-between absolute bottom-[0rem] right-[95px]">
                             <div className="flex items-center gap-6">
                                 <div className="font-bold text-4xl text-white">10</div>
                                 <div className="text-sm uppercase text-caribbeangreen-300">years experience</div>
@@ -232,7 +232,7 @@ function Home(){
                 </div>
                 <div className="py-[5.625rem] w-11/12 bg-[#F9F9F9] mx-auto mt-[5.625rem]">
                     <div className="uppercase text-richblack-900 text-4xl text-center font-bold">Your swiss knife for <HighlightedText text={'learning any language'}/></div>
-                    <div className="w-[760px] mx-auto text-richblack-700 text-center text-base leading-6">Using spin making learning multiple languages easy. with 20+ languages realistic voice-over, progress tracking, custom schedule and more.</div>
+                    <div className="text-richblack-700 text-center text-base leading-6">Using spin making learning multiple languages easy. with 20+ languages realistic voice-over, progress tracking, custom schedule and more.</div>
                     <div className="flex justify-center items-center">
                         <img width={400} height={400} className="object-contain -mr-24" src={knowUrProgress}></img>
                         <img width={400} height={400} className="object-contain" src={compareUrProgress}></img>
@@ -245,12 +245,12 @@ function Home(){
             </div>
         </div>
         <div className="bg-richblack-900 w-screen">
-            <div className="py-[90px] w-[1200px] mx-auto flex justify-between items-center relative">
-                <div className="w-[616px] h-[545px]">
-                    <img style={{filter:'blur(5px)'}} className="absolute -left-[1rem] top-[4.4rem] rounded-[10%]" src={grid}></img>
+            <div className="py-[90px] w-11/12 mx-auto flex lg:flex-row lg:justify-between justify-center items-center">
+                <div className="hidden xl:block w-[616px] h-[545px] relative">
+                    <img style={{filter:'blur(5px)'}} className="absolute -left-[2rem] -top-[2rem] rounded-[10%]" src={grid}></img>
                     <img className="absolute" width={550} src={instructor}></img>
                 </div>
-                <div className="w-[486px] flex flex-col items-start">
+                <div className="w-[486px]  mx-auto flex flex-col items-start">
                     <div className="text-4xl text-white capitalize font-bold leading-10 mb-8">
                         Become an <br/> <HighlightedText text={'instructor'}/>
                     </div>

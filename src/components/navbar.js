@@ -9,11 +9,11 @@ function Navbar(){
     function util(g_path){
         return matchPath({path: g_path}, location.pathname);
     }
-    return( <div className="w-full bg-richblack-800 py-4 fixed z-10 shadow-2xl">
+    return( <div className="text-sm lg:text-lg w-full bg-richblack-800 py-4 fixed z-10 shadow-2xl">
         <div className="w-11/12 mx-auto flex justify-between items-center">
-            <div className="text-lg font-bold text-richblack-25 flex items-center gap-2"><Link to="/">CodeBattles</Link> <img src={logo}></img></div>
-            <nav className="text-lg text-richblack-25">
-                <ul className="flex gap-10">
+            <div className="font-bold text-richblack-25 flex items-center gap-2"><Link to="/">CodeBattles</Link> <img src={logo}></img></div>
+            <nav className="text-richblack-25">
+                <ul className="hidden md:flex gap-10">
                     {
                         NavbarLinks.map((link, index)=>{
                             if(link.title === 'Catalog'){
@@ -34,7 +34,7 @@ function Navbar(){
                     }
                 </ul>
             </nav>
-            <div className="flex items-center gap-10">
+            <div className="hidden lg:flex items-center gap-10">
                 <button className={`text-richblack-100 ${util('/signup') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/signup")}}>SIGN UP</button>
                 <button className={`text-richblack-100 ${util('/login') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/login")}}>LOG IN</button>
             </div>

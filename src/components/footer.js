@@ -7,8 +7,8 @@ import youtube  from "../assets/Images/youtube.svg";
 import logo from '../assets/Logo/logo.svg'
 function Footer(){
     return(
-        <div className="flex justify-center gap-[6rem] w-screen p-8 bg-richblack-800">
-            <div className="flex gap-16 items-start">
+        <div className="flex flex-col lg:flex-row justify-center gap-[6rem] w-screen p-8 bg-richblack-800">
+            <div className="flex flex-wrap gap-16 items-start justify-between">
                 <div className="flex flex-col gap-4">
                     <div className="text-white/60 text-2xl font-bold flex gap-2">CodeBattles <img src={logo}></img></div>
                     <div className="text-white/60 font-bold">Company</div>
@@ -46,7 +46,7 @@ function Footer(){
                     <Link className="text-richblack-600">Events</Link>
                 </div>
             </div>
-            <div className="flex gap-16 items-start">
+            <div className="flex flex-wrap gap-16 items-start justify-between">
             {
                 FooterLink2.map((links, index)=>{  
                     return(<div key={index} className="flex flex-col gap-8 justify-between">
