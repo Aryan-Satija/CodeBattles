@@ -26,8 +26,8 @@ function App() {
         <Route exact path="/signup" element={<SignUp/>}/>
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
-          <Route path="/dashboard/profile" element={<Profile/>}/>
-          <Route path="/dashboard/settings" element={<Settings/>}/>
+          <Route exact path="/dashboard/profile" element={<Profile/>}/>
+          <Route exact path="/dashboard/settings" element={<Settings/>}/>
         </Route>
         <Route exact path="/login/reset-password" element={<ResetPassword/>}/>
         <Route exact path="/login/update-password/:id" element={<UpdatePassword/>}/>
