@@ -5,8 +5,12 @@ import { AUTH } from "../services/apis";
 import { apiConnector } from "../services/apiConnector";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { setToken } from "../slices/authSlice";
+import { setUser } from "../slices/profileSlice";
 function Login(){
+    const dispatch = useDispatch(); 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({email:"",password:"",role:"student"});
     console.log(formData);
@@ -28,6 +32,10 @@ function Login(){
                 progress: undefined,
                 theme: "dark",
             });  
+            dispatch(setToken(JSON.stringify(response.data.token)));
+            localStorage.setItem("token", JSON.stringify(response.data.token));
+            localStorage.setItem("user",  JSON.stringify(response.data.user));
+            dispatch(setUser(response.data.user));
             navigate('/dashboard');
         } catch(error){
             console.log(error);
@@ -43,9 +51,9 @@ function Login(){
                 });
         }
     }
-    return (<div className="w-screen h-screen bg-richblack-900 flex place-items-center">
-        <div className="w-2/3 mx-auto flex items-center gap-10">
-            <div className="w-[50%]">
+    return (<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
+        <div className="w-11/12 mx-auto flex flex-col md:flex-row justify-around items-center gap-10">
+            <div className="w-[100%] md:w-[70%]">
                 <div className="text-2xl text-richblack-5 font-bold">Welcome Back</div>
                 <p className="text-richblack-500">Discover Your Passion,</p>
                 <p style={{fontFamily:'Edu SA Beginner'}} className="text-blue-100">Be Unstoppable</p>
@@ -77,9 +85,9 @@ function Login(){
                     </div>
                 </form>
             </div>
-            <div className="relative w-full">
-                <img src={frame} width={500} height={500} className="absolute z-10 top-[-12rem] left-[3.5rem]"/>
-                <img src={login} width={500} height={500} className="absolute z-10 top-[-13rem] left-10"/>
+            <div className="w-[500px] relative">
+                <img src={frame} className="absolute top-[-1rem] left-[1rem]"/>
+                <img src={login} className="relative z-1"/>
             </div>
         </div>
     </div>)
