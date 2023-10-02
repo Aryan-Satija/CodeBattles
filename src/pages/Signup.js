@@ -60,7 +60,7 @@ function SignUp(){
     }
     return(<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
     <div className="w-11/12 mx-auto flex flex-col md:flex-row items-center gap-10">
-        <div className="w-[100%] md:w-[70%]">
+        <div className="w-[100%] md:w-[50%]">
             <div className="text-2xl text-richblack-5 font-bold">Welcome Back</div>
             <p className="text-richblack-500">Discover Your Passion,</p>
             <p style={{fontFamily:'Edu SA Beginner'}}className="text-blue-100">Be Unstoppable</p>
