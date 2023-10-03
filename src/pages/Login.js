@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import frame from '../assets/Images/frame.png';
 import login from '../assets/Images/login.png';
 import { AUTH } from "../services/apis";
 import { apiConnector } from "../services/apiConnector";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setToken } from "../slices/authSlice";
 import { setUser } from "../slices/profileSlice";
 function Login(){
     const dispatch = useDispatch(); 
+    const {token} = useSelector((state)=>{
+        return state.auth;
+    });
     const navigate = useNavigate();
     const [formData, setFormData] = useState({email:"",password:"",role:"student"});
     console.log(formData);
@@ -51,6 +54,10 @@ function Login(){
                 });
         }
     }
+    useEffect(()=>{
+        if(token)
+            navigate('/dashboard/profile')
+    }, [])
     return (<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
         <div className="w-11/12 mx-auto flex flex-col md:flex-row justify-around items-center gap-10">
             <div className="w-[100%] md:w-[50%]">
