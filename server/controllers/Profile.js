@@ -35,13 +35,8 @@ exports.updateProfile = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
 	try {
-		// TODO: Find More on Job Schedule
-		// const job = schedule.scheduleJob("10 * * * * *", function () {
-		// 	console.log("The answer to life, the universe, and everything!");
-		// });
-		// console.log(job);
-		console.log("Printing ID: ", req.user.id);
-		const id = req.user.id;
+		console.log("Printing ID: ", req.body.user._id);
+		const id = req.body.user._id;
 		
 		const user = await User.findById({ _id: id });
 		if (!user) {
@@ -51,9 +46,8 @@ exports.deleteAccount = async (req, res) => {
 			});
 		}
 		// Delete Assosiated Profile with the User
-		await Profile.findByIdAndDelete({ _id: user.additionalDetails });
+		await Profile.findByIdAndDelete({ _id: id });
 		// TODO: Unenroll User From All the Enrolled Courses
-		// Now Delete User
 		await User.findByIdAndDelete({ _id: id });
 		res.status(200).json({
 			success: true,
@@ -63,7 +57,7 @@ exports.deleteAccount = async (req, res) => {
 		console.log(error);
 		res
 			.status(500)
-			.json({ success: false, message: "User Cannot be deleted successfully" });
+			.json({ success: false, error: error.message, message: "User Cannot be deleted successfully" });
 	}
 };
 
@@ -87,27 +81,28 @@ exports.getAllUserDetails = async (req, res) => {
 	}
 };
 
-exports.updateDisplayPicture = async (req, res) => {
+exports.updateDisplayPicture = async(req, res) => {
     try {
-      const displayPicture = req.files.displayPicture
-      const userId = req.user.id
-      const image = await uploadImageToCloudinary(
+		const displayPicture = req.files.displayPicture;
+		console.log('display pictures : ', displayPicture);
+      	const userId = req.user.id;
+	  	console.log(userId);
+      	const image = await uploadImageToCloudinary(
         displayPicture,
         process.env.FOLDER_NAME,
         1000,
-        1000
-      )
-      console.log(image)
-      const updatedProfile = await User.findByIdAndUpdate(
-        { _id: userId },
-        { image: image.secure_url },
-        { new: true }
-      )
-      res.send({
-        success: true,
-        message: `Image Updated successfully`,
-        data: updatedProfile,
-      })
+        1000)
+      	console.log(image)
+      	const updatedProfile = await User.findByIdAndUpdate(
+        	{ _id: userId },
+        	{ image: image.secure_url },
+        	{ new: true }
+      	)
+      	res.send({
+        	success: true,
+        	message: `Image Updated successfully`,
+        	data: updatedProfile,
+      	})
     } catch (error) {
       return res.status(500).json({
         success: false,

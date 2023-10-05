@@ -19,7 +19,7 @@ const Profile = () => {
   return (
     <div className='w-full h-screen flex flex-col gap-6 pr-6 item-center'>
         <div>
-          <div className='text-richblack-5 text-4xl float-left'>My Profile</div>
+          <div className='text-richblack-5 text-2xl float-left'>My Profile</div>
         </div>
         <div className='w-full p-[1.5rem] bg-richblack-800 rounded-md flex gap-[20px] justify-between items-center'>
             <div className='w-[70%] flex item-center gap-4'>
@@ -65,7 +65,7 @@ const Profile = () => {
                 </div>
                 <div className='flex flex-col w-[45%] justify-between gap-2'>
                   <div className='text-richblack-600 text-md'>Contact Number</div>
-                  <div className='text-richblack-200 text-md'>{user.additionalDetails.contactNumber ? user.additionalDetails.contactNumber : '-'}</div>
+                  <div className='text-richblack-200 text-md'>{user.contactNumber ? user.contactNumber : '-'}</div>
                 </div>
                 <div className='flex flex-col w-[45%] justify-between gap-2'>
                   <div className='text-richblack-600 text-md'>Gender</div>

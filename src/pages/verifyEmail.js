@@ -15,7 +15,7 @@ function VerifyEmail(){
     useEffect(()=>{
         if(!signupData)
             navigate('/signup');
-    }, [])
+    }, []);
     async function submitHandler(){
         try{
             let user_otp = "";
@@ -42,7 +42,7 @@ function VerifyEmail(){
                 progress: undefined,
                 theme: "dark",
             });
-            navigate("/dashboard");
+            navigate("/login");
             console.log(response);
         } catch(error){
             toast.error(`${error.response.data.message}`, {

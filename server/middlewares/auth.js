@@ -8,19 +8,18 @@ exports.auth = async (req, res, next) => {
         //extract token
         const token = req.cookies.token 
                         || req.body.token 
-                        || req.header("Authorisation").replace("Bearer ", "");
-
+                        || req.header("Authorisation")?.replace("Bearer ", "");
         //if token missing, then return response
         if(!token) {
             return res.status(401).json({
                 success:false,
-                message:'TOken is missing',
+                message:'Token is missing',
             });
         }
 
         //verify the token
         try{
-            const decode =  jwt.verify(token, process.env.JWT_SECRET);
+            const decode = jwt.verify(token, process.env.JWT_SECRET);
             console.log(decode);
             req.user = decode;
         }
@@ -36,6 +35,8 @@ exports.auth = async (req, res, next) => {
     catch(error) {  
         return res.status(401).json({
             success:false,
+            error1: error.message,
+            error2: error,
             message:'Something went wrong while validating the token',
         });
     }

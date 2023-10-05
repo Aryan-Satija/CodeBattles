@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema(
 			type: Boolean,
 			default: true,
 		},
+		contactNumber:{
+			type: String,
+			required: true
+		},
 		additionalDetails: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
