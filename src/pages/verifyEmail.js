@@ -4,9 +4,15 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { AUTH } from "../services/apis";
 import { apiConnector } from "../services/apiConnector";
-import {  useSelector } from "react-redux";
+import {  useSelector, useDispatch } from "react-redux";
+import { Spinner } from "../components/Spinner";
+import { setLoading } from "../slices/authSlice";
 function VerifyEmail(){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {loading} = useSelector((state)=>{
+        return state.auth;
+    })
     const [otp, setOtp] = useState({dig1:"", dig2:"",dig3:"",dig4:"",dig5:"",dig6:""});
     const {signupData} = useSelector((state)=>{
         return state.auth;
@@ -18,6 +24,7 @@ function VerifyEmail(){
     }, []);
     async function submitHandler(){
         try{
+            dispatch(setLoading(true));
             let user_otp = "";
             for(let dig in otp) 
                 user_otp += otp[dig];
@@ -44,7 +51,9 @@ function VerifyEmail(){
             });
             navigate("/login");
             console.log(response);
+            dispatch(setLoading(false));
         } catch(error){
+            dispatch(setLoading(false));
             toast.error(`${error.response.data.message}`, {
                 position: "top-right",
                 autoClose: 5000,
@@ -58,7 +67,7 @@ function VerifyEmail(){
             console.log(error);
         }
     } 
-    return (<div className="flex flex-col justify-center items-center w-screen h-screen">
+    return (loading ? <Spinner/> : <div className="flex flex-col justify-center items-center w-screen h-screen">
         <div className="text-richblack-5 text-4xl font-semibold capitalize leading-10">Verify email</div>
         <p className="text-richblack-500 text-lg font-thin">A verification code has been sent to you. Enter the code below</p>
         <div className="flex items-center justify-between w-[400px] mt-8 select-none">

@@ -14,7 +14,7 @@ import PrivateRoute from "./components/PrivateRoute.js";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
-function App() {
+function App(){
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter overflow-x-hidden">
       <Navbar/>

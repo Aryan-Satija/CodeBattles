@@ -5,9 +5,14 @@ import signup from '../assets/Images/signup.png';
 import { AUTH } from "../services/apis";
 import { apiConnector } from "../services/apiConnector";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {setSignUpForm} from '../slices/authSlice.js';
+import { setLoading } from "../slices/authSlice.js";
+import { Spinner } from "../components/Spinner";
 function SignUp(){
+    const {loading} = useSelector((state)=>{
+        return state.auth;
+    })
     const [formData, setFormData] = useState({fname:"",lname: "",contact:"",email:"",password:"", confirmpassword:"",role:"Student"});
     const dispatch = useDispatch();
     const navigate = useNavigate(); 
@@ -15,6 +20,7 @@ function SignUp(){
     async function submitHandler(event){
         event.preventDefault();
         try{
+            dispatch(setLoading(true));
             if(formData.password !== formData.confirmpassword){
                 toast.error('Passwords don\'t match', {
                     position: "top-right",
@@ -43,9 +49,10 @@ function SignUp(){
                     progress: undefined,
                     theme: "dark",
                 });  
-
+                dispatch(setLoading(false));
             }
         } catch(error){
+            dispatch(setLoading(false));
             toast.error(`${error.response.data.message}`, {
                 position: "top-right",
                 autoClose: 5000,
@@ -55,10 +62,10 @@ function SignUp(){
                 draggable: true,
                 progress: undefined,
                 theme: "dark",
-                });
+            });
         }
     }
-    return(<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
+    return(loading ? <Spinner/> : <div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
     <div className="w-11/12 mx-auto flex flex-col md:flex-row items-center gap-10">
         <div className="w-[100%] md:w-[50%]">
             <div className="text-2xl text-richblack-5 font-bold">Welcome Back</div>

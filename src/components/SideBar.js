@@ -5,11 +5,15 @@ import * as Icon from "react-icons/vsc";
 import {VscSettingsGear} from "react-icons/vsc";
 import {BiLogOut} from "react-icons/bi";
 import { useState, useEffect } from "react";
-function SideBar(){
+function SideBar({modal, setModal}){
     const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
     const updateViewportWidth = () => {
         setViewportWidth(window.innerWidth);
     };
+    function openModal(){
+        
+        setModal(!modal);
+    }
     useEffect(() => {
         window.addEventListener('resize', updateViewportWidth);
         return () => {
@@ -50,7 +54,7 @@ function SideBar(){
         <div className={`${matchPath({path:'/dashboard/logout'}, location.pathname) ? 'text-yellow-200 bg-yellow-800' : 'text-richblack-200'}  flex items-center gap-4 ${viewportWidth > 800 ? 'px-8' : 'px-2'} relative`}>
         <div className={`h-full w-[0.2rem] absolute top-0 left-0 ${matchPath({path:'/dashboard/logout'}, location.pathname) ? 'bg-yellow-200' : 'bg-opacity-0'}`}></div>
             <BiLogOut className="text-lg"/>
-            <button>{viewportWidth > 800 ? 'Log Out' : ''}</button>
+            <button onClick={openModal} >{viewportWidth > 800 ? 'Log Out' : ''}</button>
         </div>
     </div>)
 }
