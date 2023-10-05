@@ -8,17 +8,23 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setToken } from "../slices/authSlice";
+import { setLoading } from "../slices/authSlice";
 import { setUser } from "../slices/profileSlice";
+import { Spinner } from "../components/Spinner";
 function Login(){
     const dispatch = useDispatch(); 
     const {token} = useSelector((state)=>{
         return state.auth;
     });
+    const {loading} = useSelector((state)=>{
+        return state.auth;
+    })
     const navigate = useNavigate();
     const [formData, setFormData] = useState({email:"",password:"",role:"student"});
     async function submitHandler(event){
         event.preventDefault();
         try{
+            dispatch(setLoading(true));
             const response = await apiConnector("POST", AUTH.LOGIN_API, {
                 'email': formData.email,
                 'password': formData.password
@@ -42,7 +48,9 @@ function Login(){
             localStorage.setItem("user",  JSON.stringify(response.data.user));
             dispatch(setUser(response.data.user));
             navigate('/dashboard/profile');
+            dispatch(setLoading(false));
         } catch(error){
+            dispatch(setLoading(false));
             console.log(error);
             toast.error(`${error.response.data.message}`, {
                 position: "top-right",
@@ -60,7 +68,9 @@ function Login(){
         if(token)
             navigate('/dashboard/profile')
     }, [])
-    return (<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
+    return (
+        loading ? (<Spinner/>):
+        (<div className="w-screen py-[4rem] min-h-screen bg-richblack-900 flex place-items-center">
         <div className="w-11/12 mx-auto flex flex-col md:flex-row justify-around items-center gap-10">
             <div className="w-[100%] md:w-[50%]">
                 <div className="text-2xl text-richblack-5 font-bold">Welcome Back</div>
@@ -100,5 +110,6 @@ function Login(){
             </div>
         </div>
     </div>)
+    )
 }
 export default Login;

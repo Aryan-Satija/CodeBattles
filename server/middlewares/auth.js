@@ -27,6 +27,7 @@ exports.auth = async (req, res, next) => {
             //verification - issue
             return res.status(401).json({
                 success:false,
+                error: err.message,
                 message:'token is invalid',
             });
         }

@@ -4,7 +4,9 @@ import {BiSave} from 'react-icons/bi';
 import {apiConnector} from '../services/apiConnector.js';
 import {SETTINGS} from '../services/apis.js';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const Settings = () => {
+  const navigate = useNavigate();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const updateViewportWidth = () => {
       setViewportWidth(window.innerWidth);
@@ -69,6 +71,7 @@ const Settings = () => {
         theme: "dark",
       }); 
       localStorage.clear(); 
+      navigate("/");
     } catch(error){
       console.log(error);
       toast.error('Account Couldn\'t Be Deleted', {
