@@ -33,7 +33,7 @@ app.use(
 		useTempFiles:true,
 		tempFileDir:"/tmp",
 	})
-)
+);
 //cloudinary connection
 cloudinaryConnect();
 

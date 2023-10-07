@@ -8,7 +8,7 @@ exports.auth = async (req, res, next) => {
         //extract token
         const token = req.cookies.token 
                         || req.body.token 
-                        || req.header("Authorisation")?.replace("Bearer ", "");
+                        || req.header("Authorization")?.replace("Bearer ", "");
         //if token missing, then return response
         if(!token) {
             return res.status(401).json({
@@ -27,6 +27,7 @@ exports.auth = async (req, res, next) => {
             //verification - issue
             return res.status(401).json({
                 success:false,
+                token: token,
                 error: err.message,
                 message:'token is invalid',
             });
