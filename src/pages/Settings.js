@@ -33,7 +33,7 @@ const Settings = () => {
                       formData,
                       {
                         "Content-Type": "multipart/form-data",
-                        Authorisation: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                       });
         console.log(response);   
         
@@ -57,7 +57,7 @@ const Settings = () => {
         user,
         },
         {
-          Authorisation: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         }
       );
       toast.success(`Account Deleted Successfully`, {

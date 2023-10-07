@@ -7,7 +7,7 @@ exports.createCourse = async (req, res) => {
 	try {
 		// Get user ID from request object
 		const userId = req.user.id;
-
+		console.log("userid", userId);
 		// Get all required fields from request body
 		let {
 			courseName,
@@ -19,10 +19,9 @@ exports.createCourse = async (req, res) => {
 			status,
 			instructions,
 		} = req.body;
-
 		// Get thumbnail image from request files
 		const thumbnail = req.files.thumbnailImage;
-
+		console.log("thumbnail", thumbnail);
 		// Check if any of the required fields are missing
 		if (
 			!courseName ||
@@ -30,8 +29,7 @@ exports.createCourse = async (req, res) => {
 			!whatYouWillLearn ||
 			!price ||
 			!tag ||
-			!thumbnail ||
-			!category
+			!thumbnail
 		) {
 			return res.status(400).json({
 				success: false,
@@ -42,10 +40,10 @@ exports.createCourse = async (req, res) => {
 			status = "Draft";
 		}
 		// Check if the user is an instructor
-		const instructorDetails = await User.findById(userId, {
+		let instructorDetails = await User.findById(userId,{
 			accountType: "Instructor",
 		});
-
+		console.log(instructorDetails);
 		if (!instructorDetails) {
 			return res.status(404).json({
 				success: false,
@@ -53,14 +51,7 @@ exports.createCourse = async (req, res) => {
 			});
 		}
 
-		// Check if the tag given is valid
-		const categoryDetails = await Category.findById(category);
-		if (!categoryDetails) {
-			return res.status(404).json({
-				success: false,
-				message: "Category Details Not Found",
-			});
-		}
+
 		// Upload the Thumbnail to Cloudinary
 		const thumbnailImage = await uploadImageToCloudinary(
 			thumbnail,
@@ -71,11 +62,11 @@ exports.createCourse = async (req, res) => {
 		const newCourse = await Course.create({
 			courseName,
 			courseDescription,
-			instructor: instructorDetails._id,
+			instructor: userId,
 			whatYouWillLearn: whatYouWillLearn,
 			price,
 			tag: tag,
-			category: categoryDetails._id,
+			category: category ? categoryDetails._id : null,
 			thumbnail: thumbnailImage.secure_url,
 			status: status,
 			instructions: instructions,
@@ -94,15 +85,15 @@ exports.createCourse = async (req, res) => {
 			{ new: true }
 		);
 		// Add the new course to the Categories
-		await Category.findByIdAndUpdate(
-			{ _id: category },
-			{
-				$push: {
-					course: newCourse._id,
-				},
-			},
-			{ new: true }
-		);
+		// await Category.findByIdAndUpdate(
+		// 	{ _id: category },
+		// 	{
+		// 		$push: {
+		// 			course: newCourse._id,
+		// 		},
+		// 	},
+		// 	{ new: true }
+		// );
 		// Return the new course and a success message
 		res.status(200).json({
 			success: true,
@@ -115,7 +106,7 @@ exports.createCourse = async (req, res) => {
 		res.status(500).json({
 			success: false,
 			message: "Failed to create course",
-			error: error.message,
+			error: error.message,	
 		});
 	}
 };
