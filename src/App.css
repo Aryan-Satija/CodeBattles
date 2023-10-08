@@ -3,3 +3,17 @@
     background: url('./assets/Images/bghome.svg');
     background-repeat: repeat;
 }
+
+.container {
+  background-color: rgba(20, 30, 40);
+}
+
+.barCompleted {
+  background-color: rgba(0, 120, 10);
+  width: 80%;
+}
+
+.label {
+  font-size: 10px;
+  color: rgba(200, 200, 200);
+}

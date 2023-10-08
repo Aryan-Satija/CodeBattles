@@ -11,5 +11,6 @@ export const AUTH = {
 }
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",
-    DELETE_ACCOUNT_API : BASE_URL + "/profile/deleteProfile"
+    DELETE_ACCOUNT_API : BASE_URL + "/profile/deleteProfile",
+    GET_ENROLLED_COURSES_API : BASE_URL + "/profile/getEnrolledCourses"
 }
