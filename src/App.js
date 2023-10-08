@@ -14,7 +14,16 @@ import PrivateRoute from "./components/PrivateRoute.js";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
+import { ACCOUNT_TYPE } from "./utils/constants";
+import { UseSelector, useSelector } from "react-redux";
+import EnrolledCourses from "./pages/EnrolledCourses";
+import Wishlist from "./pages/Wishlist";
+import CreateCourse from "./pages/CreateCourse";
 function App(){
+  const {user} = useSelector((state)=>{
+    return state.profile;
+  });
+  console.log("user", user);
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter overflow-x-hidden">
       <Navbar/>
@@ -28,6 +37,21 @@ function App(){
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
           <Route exact path="/dashboard/profile" element={<Profile/>}/>
           <Route exact path="/dashboard/settings" element={<Settings/>}/>
+          {
+            user && user.accountType === ACCOUNT_TYPE.STUDENT && (
+              <>
+                <Route exact path="/dashboard/enrolled-courses" element={<EnrolledCourses/>}/>
+                <Route exact path="/dashboard/wishlist" element={<Wishlist/>}/>
+              </>
+            )
+          }
+          {
+            user && user.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <>
+                <Route exact path="/dashboard/add-course" element={<CreateCourse/>}/>
+              </>
+            )
+          }
         </Route>
         <Route exact path="/login/reset-password" element={<ResetPassword/>}/>
         <Route exact path="/login/update-password/:id" element={<UpdatePassword/>}/>

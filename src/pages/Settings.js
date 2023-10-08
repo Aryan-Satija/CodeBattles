@@ -88,7 +88,7 @@ const Settings = () => {
   }
   console.log(user);
   return (
-    <div className='w-full h-screen flex flex-col gap-6 pr-6 pb-10 item-center'>
+    <div className='w-full min-h-screen flex flex-col gap-6 pr-6 pb-10 item-center'>
       <div>
         <div className='text-richblack-5 text-2xl float-left'>Edit Profile</div>
       </div>
