@@ -52,7 +52,7 @@ const EnrolledCourses = () => {
                                         <div className='flex items-center gap-4'>
                                             {
                                                 course.tag.map((tag)=>{
-                                                    return (<div className='p-2  flex items-center justify-center rounded-full h-[2rem] bg-yellow-400 text-richblack-700'>{tag}</div>)
+                                                    return (<div className='p-2  flex items-center justify-center rounded-full h-[2rem] bg-yellow-800 text-yellow-200 border-2 border-yellow-200'>{tag}</div>)
                                                 })
                                             }
                                         </div>
