@@ -11,7 +11,6 @@ function SideBar({modal, setModal}){
         setViewportWidth(window.innerWidth);
     };
     function openModal(){
-        
         setModal(!modal);
     }
     useEffect(() => {
