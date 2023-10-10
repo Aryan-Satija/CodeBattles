@@ -5,11 +5,64 @@ import google  from "../assets/Images/google.svg";
 import twitter  from "../assets/Images/twitter.svg";
 import youtube  from "../assets/Images/youtube.svg";
 import logo from '../assets/Logo/logo.svg'
+import { motion, variants } from "framer-motion";
 function Footer(){
+    const footerVarientsLeft = {
+        hidden:{
+            x:-200,
+            opacity:0
+        },
+        visible:{
+            x: 0,
+            opacity: 1,
+            type: "spring",
+            damping:0,
+            when:"beforeChildren",
+            staggerChildren:0.5
+        }
+    }
+    const footerListVarientsLeft = {
+        hidden:{
+            x:-200,
+            opacity:0
+        },
+        visible:{
+            x: 0,
+            opacity: 1,
+            type: "spring",
+            damping:0,
+        }
+    }
+    const footerVarientsRight = {
+        hidden:{
+            x:200,
+            opacity:0
+        },
+        visible:{
+            x: 0,
+            opacity: 1,
+            type: "spring",
+            damping:0,
+            when:"beforeChildren",
+            staggerChildren:0.5
+        }
+    }
+    const footerListVarientsRight = {
+        hidden:{
+            x:200,
+            opacity:0
+        },
+        visible:{
+            x: 0,
+            opacity: 1,
+            type: "spring",
+            damping:0,
+        }
+    }
     return(
         <div className="flex flex-col lg:flex-row justify-center gap-[6rem] w-screen p-8 bg-richblack-800">
-            <div className="flex flex-wrap gap-16 items-start justify-between">
-                <div className="flex flex-col gap-4">
+            <motion.div variants={footerVarientsLeft} initial="hidden" whileInView="visible" className="flex flex-wrap gap-16 items-start justify-between">
+                <motion.div variants={footerListVarientsLeft} className="flex flex-col gap-4">
                     <div className="text-white/60 text-2xl font-bold flex gap-2">CodeBattles <img src={logo}></img></div>
                     <div className="text-white/60 font-bold">Company</div>
                     <Link className="text-richblack-600">About</Link>
@@ -21,8 +74,8 @@ function Footer(){
                         <Link><img src={twitter}></img></Link>
                         <Link><img src={youtube}></img></Link>
                     </div>
-                </div>
-                <div className="flex flex-col gap-4">
+                </motion.div>
+                <motion.div variants={footerListVarientsLeft} className="flex flex-col gap-4">
                     <div className="text-white/60 font-bold">Resources</div>
                     <Link className="text-richblack-600">Article</Link>
                     <Link className="text-richblack-600">Blog</Link>
@@ -34,8 +87,8 @@ function Footer(){
                     <Link className="text-richblack-600">Workspaces</Link>
                     <div className="text-white/60 font-bold">Support</div>
                     <Link className="text-richblack-600">Help Center</Link>
-                </div>
-                <div className="flex flex-col gap-4">
+                </motion.div>
+                <motion.div variants={footerListVarientsLeft} className="flex flex-col gap-4">
                     <div className="text-white/60 font-bold">Plans</div>
                     <Link className="text-richblack-600">Paid memberships</Link>
                     <Link className="text-richblack-600">For students</Link>
@@ -44,17 +97,17 @@ function Footer(){
                     <Link className="text-richblack-600">Forums</Link>
                     <Link className="text-richblack-600">Chapters</Link>
                     <Link className="text-richblack-600">Events</Link>
-                </div>
-            </div>
-            <div className="flex flex-wrap gap-16 items-start justify-between">
+                </motion.div>
+            </motion.div>
+            <motion.div className="flex flex-wrap gap-16 items-start justify-between">
             {
                 FooterLink2.map((links, index)=>{  
-                    return(<div key={index} className="flex flex-col gap-8 justify-between">
-                        <div className="text-white/60 font-bold relative cursor-pointer">{
+                    return(<motion.div variants={footerVarientsRight} initial="hidden" whileInView="visible" key={index} className="flex flex-col gap-8 justify-between">
+                        <motion.div variants={footerListVarientsRight} className="text-white/60 font-bold relative cursor-pointer">{
                             links.title
                         }
-                        </div>
-                        <div className="flex flex-col justify-between gap-2">
+                        </motion.div>
+                        <motion.div variants={footerListVarientsRight} className="flex flex-col justify-between gap-2">
                             {
                                 links.links.map((link)=>{
                                     return (
@@ -62,11 +115,11 @@ function Footer(){
                                     )
                                 })
                             }
-                        </div>
-                    </div>) 
+                        </motion.div>
+                    </motion.div>) 
                 })
             }
-            </div>
+            </motion.div>
         </div>
     )
 }

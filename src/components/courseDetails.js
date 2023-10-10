@@ -1,6 +1,7 @@
 import {useForm} from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import Upload from './Upload';
 const CourseDetails = ({setPage}) => {
     const form = useForm();
 	const displayTag = (event)=>{
@@ -65,6 +66,11 @@ const CourseDetails = ({setPage}) => {
                 setTagValue(event.target.value);
             }} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
         </label>
+        <Upload
+            name="courseImage"
+            label="Course Thumbnail"
+            register={register}
+            setValue={setValue}/>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Enter Benefits Of The Course
             <textarea placeholder='Enter Description' rows={4} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
