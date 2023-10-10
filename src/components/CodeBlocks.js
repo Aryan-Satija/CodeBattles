@@ -1,7 +1,8 @@
 import { TypeAnimation } from 'react-type-animation';
 import CTAbutton from "./CTAbutton";
-function CodeBlocks({position, title, body, CTAbtn1, CTAbtn2, color1, color2, color3}){
-    return (<div className={`flex ${position} w-full justify-between my-16 gap-16`}>
+import { motion } from 'framer-motion';
+function CodeBlocks({type, position, title, body, CTAbtn1, CTAbtn2, color1, color2, color3}){
+    return (<motion.div initial={type === 1 ? {x:-200} : {x:200}} whileInView={{x:0, y:0, transition:{duration:0.4}}} className={`flex ${position} w-full justify-between my-16 gap-16`}>
         <div className='w-full md:w-[45%]'>
             {
                 title
@@ -53,6 +54,6 @@ function CodeBlocks({position, title, body, CTAbtn1, CTAbtn2, color1, color2, co
             }}>
             </div>
         </div>
-    </div>)
+    </motion.div>)
 }
 export default CodeBlocks;

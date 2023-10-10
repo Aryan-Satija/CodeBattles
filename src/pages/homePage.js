@@ -21,6 +21,7 @@ import { HomePageExplore } from "../data/tagData";
 import { apiConnector } from "../services/apiConnector";
 import { CATEGORIES } from '../services/apis.js'
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { motion } from "framer-motion";
 function Home(){
     const tags = [
         "Free",
@@ -66,7 +67,7 @@ function Home(){
                 <CTAbutton linkTo={'/signup'} yellow={true}>Learn More</CTAbutton>
                 <CTAbutton linkTo={'/login'} yellow={false}>Book A Demo</CTAbutton>
             </div>
-            <div  className='my-8'>
+            <div className='my-8'>
                 <video
                     muted
                     loop
@@ -75,6 +76,7 @@ function Home(){
                 </video>
             </div>
             <CodeBlocks 
+                type={1}
                 position= {'flex-col md:flex-row md:items-center'}
                 title={<div className="text-4xl font-bold">Start <HighlightedText text={'coding potential'}/> with our online courses.</div>}
                 body={'Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you.'}
@@ -93,6 +95,7 @@ function Home(){
                 color3 = {'#F8F8FF'}
             />
             <CodeBlocks 
+                type={2}
                 position= {'flex-col md:flex-row-reverse md:items-center md:gap-4'}
                 title={<div className="text-4xl font-bold">Unlock your <HighlightedText text={'coding in seconds'}/></div>}
                 body={`Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson.`}
@@ -131,7 +134,7 @@ function Home(){
         <div className="mx-auto w-11/12 flex flex-col xl:flex-row gap-4 my-4 justify-between items-center xl:translate-y-16">
             {
                 courses.map((course, index)=>{
-                    return(<div key={index} className="group w-[340px] bg-richblack-800 duration-200 hover:bg-white hover:shadow-[10px_10px_0_0_rgba(255,215,10,1)] cursor-pointer">
+                    return(<motion.div initial={{y:400,opacity:0}} whileInView={{x:0, y:0,opacity:1}} key={index} className="group w-[340px] bg-richblack-800 duration-200 hover:bg-white hover:shadow-[10px_10px_0_0_rgba(255,215,10,1)] cursor-pointer">
                         <div className="px-[2rem] pt-[2rem] pb-[3.25rem] flex flex-col gap-[12px] border-dotted border-b-2 border-richblack-200">
                             <div className="group-hover:text-richblack-900 text-richblack-25 text-[20px] font-semibold">{course.heading}</div>
                             <div className="text-richblack-200">{course.description}</div>
@@ -140,7 +143,7 @@ function Home(){
                             <div className="text-blue-500">level: {course.level}</div>
                             <div className="text-blue-500">{course.lessonNumber} lessons</div>
                         </div>
-                    </div>)
+                    </motion.div>)
                 })
             }
         </div>
@@ -219,11 +222,11 @@ function Home(){
                             <source src={timeLineVideo}></source>
                         </video>
                         <div className="w-[510px] h-[130px] bg-caribbeangreen-700 hidden xl:flex p-[2.625rem] justify-between absolute bottom-[0rem] right-[95px]">
-                            <div className="flex items-center gap-6">
+                            <div className=" flex items-center pl-6 gap-6">
                                 <div className="font-bold text-4xl text-white">10</div>
                                 <div className="text-sm uppercase text-caribbeangreen-300">years experience</div>
                             </div>
-                            <div className="flex items-center gap-6">
+                            <div className="flex items-center pl-6 gap-6">
                                 <div className="font-bold text-4xl text-white">250</div>
                                 <div className="text-sm uppercase text-caribbeangreen-300">types of courses</div>
                             </div>
@@ -234,9 +237,9 @@ function Home(){
                     <div className="uppercase text-richblack-900 text-4xl text-center font-bold">Your swiss knife for <HighlightedText text={'learning any language'}/></div>
                     <div className="text-richblack-700 text-center text-base leading-6">Using spin making learning multiple languages easy. with 20+ languages realistic voice-over, progress tracking, custom schedule and more.</div>
                     <div className="flex justify-center items-center">
-                        <img width={400} height={400} className="object-contain -mr-24" src={knowUrProgress}></img>
-                        <img width={400} height={400} className="object-contain" src={compareUrProgress}></img>
-                        <img width={400} height={400} className="object-contain -ml-28" src={planUrProgress}></img>
+                        <motion.img width={400} height={400} className="object-contain -mr-24" src={knowUrProgress}></motion.img>
+                        <motion.img className="object-contain" src={compareUrProgress}></motion.img>
+                        <motion.img width={400} height={400} className="object-contain -ml-28" src={planUrProgress}></motion.img>
                     </div>
                     <div className="flex justify-center items-center">
                         <CTAbutton yellow={true} linkTo={'/signup'}>Learn More</CTAbutton>
