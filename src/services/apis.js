@@ -9,6 +9,10 @@ export const AUTH = {
     RESET_TOKEN_API: BASE_URL + "/auth/reset-password-token",
     RESET_PASSWORD_API: BASE_URL + "/auth/reset-password"
 }
+export const COURSE = {
+    COURSE_CREATE_API : BASE_URL + "/course/createCourse",
+    COURSE_GET_CATEGORIES: BASE_URL + "/course/showAllCategories"
+}
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",
     DELETE_ACCOUNT_API : BASE_URL + "/profile/deleteProfile",

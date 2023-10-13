@@ -61,7 +61,7 @@ function Login(){
                 draggable: true,
                 progress: undefined,
                 theme: "dark",
-                });
+            });
         }
     }
     useEffect(()=>{

@@ -2,13 +2,10 @@ const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-// Function to create a new course
 exports.createCourse = async (req, res) => {
 	try {
-		// Get user ID from request object
 		const userId = req.user.id;
-		console.log("userid", userId);
-		// Get all required fields from request body
+		// console.log("userid", userId);
 		let {
 			courseName,
 			courseDescription,
@@ -19,10 +16,7 @@ exports.createCourse = async (req, res) => {
 			status,
 			instructions,
 		} = req.body;
-		// Get thumbnail image from request files
 		const thumbnail = req.files.thumbnailImage;
-		console.log("thumbnail", thumbnail);
-		// Check if any of the required fields are missing
 		if (
 			!courseName ||
 			!courseDescription ||
@@ -39,7 +33,6 @@ exports.createCourse = async (req, res) => {
 		if (!status || status === undefined) {
 			status = "Draft";
 		}
-		// Check if the user is an instructor
 		let instructorDetails = await User.findById(userId,{
 			accountType: "Instructor",
 		});
@@ -50,15 +43,11 @@ exports.createCourse = async (req, res) => {
 				message: "Instructor Details Not Found",
 			});
 		}
-
-
-		// Upload the Thumbnail to Cloudinary
 		const thumbnailImage = await uploadImageToCloudinary(
 			thumbnail,
 			process.env.FOLDER_NAME
 		);
 		console.log(thumbnailImage);
-		// Create a new course with the given details
 		const newCourse = await Course.create({
 			courseName,
 			courseDescription,
@@ -66,13 +55,11 @@ exports.createCourse = async (req, res) => {
 			whatYouWillLearn: whatYouWillLearn,
 			price,
 			tag: tag,
-			category: category ? categoryDetails._id : null,
+			category: category,
 			thumbnail: thumbnailImage.secure_url,
 			status: status,
 			instructions: instructions,
 		});
-
-		// Add the new course to the User Schema of the Instructor
 		await User.findByIdAndUpdate(
 			{
 				_id: instructorDetails._id,
@@ -84,29 +71,26 @@ exports.createCourse = async (req, res) => {
 			},
 			{ new: true }
 		);
-		// Add the new course to the Categories
-		// await Category.findByIdAndUpdate(
-		// 	{ _id: category },
-		// 	{
-		// 		$push: {
-		// 			course: newCourse._id,
-		// 		},
-		// 	},
-		// 	{ new: true }
-		// );
-		// Return the new course and a success message
+		await Category.findByIdAndUpdate(
+			{ _id: category },
+			{
+				$push: {
+					course: newCourse._id,
+				},
+			},
+			{ new: true }
+		);
 		res.status(200).json({
 			success: true,
 			data: newCourse,
 			message: "Course Created Successfully",
 		});
 	} catch (error) {
-		// Handle any errors that occur during the creation of the course
-		console.error(error);
+		console.log(error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to create course",
-			error: error.message,	
+			error: error.message
 		});
 	}
 };
