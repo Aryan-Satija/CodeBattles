@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {FaCheck} from 'react-icons/fa6'
 import CourseDetails from '../components/courseDetails';
+import {CourseBuilder} from '../components/courseBuilder';
 const steps = [
   	{
 		id: 1,
@@ -46,7 +47,14 @@ const CreateCourse = () => {
 				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 1 ? 'border-yellow-400' : 'border-richblack-200' }  top-5 left-44 absolute`}></div>
 				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 2 ? 'border-yellow-400' : 'border-richblack-200' } top-5 right-44 absolute`}></div>
 			</div>
-			<CourseDetails setPage={setPage}/>
+			{
+				page === 1 && 
+				<CourseDetails setPage={setPage}/>
+			}
+			{
+				page === 2 &&
+				<CourseBuilder/>
+			}
 		</div>
 		<div className="bg-richblack-800 p-[24px] max-w-[380px] text-richblack-100 rounded-lg flex flex-col gap-4">
 			<div className="text-md font-bold">⚡Course Upload Tips</div>

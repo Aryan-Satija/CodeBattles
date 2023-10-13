@@ -2,6 +2,10 @@ import {useForm} from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Upload from './Upload';
+import { apiConnector } from '../services/apiConnector';
+import { COURSE } from '../services/apis';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 const CourseDetails = ({setPage}) => {
     const form = useForm();
 	const displayTag = (event)=>{
@@ -15,31 +19,66 @@ const CourseDetails = ({setPage}) => {
     const addInstruction = ()=>{
         if(instructionValue !== ''){
             setInstructionList(prev=>[...prev, instructionValue]);
-            setInstructionValue('');    
+            setInstructionValue(''); 
         }
     }
     const deleteInstruction = (index)=>{
-        let newList = [...instructionList]
+        let newList = [...instructionList];
         newList.splice(index, 1);
         setInstructionList(newList);
     }
-	const {register, watch, handleSubmit, setValue} = form;
+	const {register, handleSubmit, setValue} = form;
 	const [tagList, setTagList] = useState([]);
 	const [tagValue, setTagValue] = useState('');
 	const [instructionList, setInstructionList] = useState([]);
 	const [instructionValue, setInstructionValue] = useState('');
-	console.log(tagList);
+	const [categoryList, setCategoryList] = useState([]);
+    const {token} = useSelector(state=>state.auth);
 	useEffect(()=>{
 		setValue("tag", tagList);
 	}, [tagList]);
 	useEffect(()=>{
-		register("tag");
-	}, [])
-	const submitHandler = (data)=>{
+        const getCategories = async() => {
+            const response = await apiConnector("GET", COURSE.COURSE_GET_CATEGORIES);
+            console.log('response', response);
+            setCategoryList(response?.data?.data);
+        }
+        getCategories();
+        register("tag");
+	}, []);
+	const submitHandler = async(data)=>{
+        console.log('data', data);
+        try{
+            const formData = new FormData();
+            formData.append("courseName", data.courseName);
+            formData.append("courseDescription", data.courseDescription);
+            formData.append("whatYouWillLearn", data.courseBenefits);
+            formData.append("price", data.price);
+            formData.append("tag", data.tag);
+            formData.append("category", data.courseCategory);
+            formData.append("thumbnailImage", data.courseImage);
+            formData.append("status", 'Draft');
+            formData.append("instructions", instructionList);
+            const response = await apiConnector("POST", COURSE.COURSE_CREATE_API, formData, {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            });
+            console.log(response);
+        } catch(error){
+            toast.error('Something Went Wrong', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            console.log(error);
+        }
         setPage(2);
-        console.log(data);
     }  
-
     return (<form onSubmit={handleSubmit(submitHandler)} className='bg-richblack-800 p-[24px] rounded-lg flex flex-col gap-4'>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Course Title
@@ -66,6 +105,17 @@ const CourseDetails = ({setPage}) => {
                 setTagValue(event.target.value);
             }} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
         </label>
+        <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
+            Categories
+            <select  {...register("courseCategory", { required: true })} className='bg-richblack-700 text-richblack-200 p-[12px] w-full rounded-md focus:outline-none'>
+                <option value="" disabled>Choose A Category</option>
+                {
+                    categoryList.map((category)=>{
+                        return (<option key={category._id} value={category._id}>{category.name}</option>);
+                    })
+                }
+            </select>
+        </label>
         <Upload
             name="courseImage"
             label="Course Thumbnail"
@@ -73,7 +123,7 @@ const CourseDetails = ({setPage}) => {
             setValue={setValue}/>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Enter Benefits Of The Course
-            <textarea placeholder='Enter Description' rows={4} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
+            <textarea placeholder='Enter Description' {...register("courseBenefits")} rows={4} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
         </label>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Instructions
@@ -92,7 +142,7 @@ const CourseDetails = ({setPage}) => {
         }
         </div>
         <div>
-            <button className={`cursor-pointer float-right rounded-[8px] px-[24px] py-[12px] text-center bg-yellow-800 text-yellow-200 border-2 border-yellow-200 duration-200 hover:scale-95`}>Next</button>
+            <button type='submit' className={`cursor-pointer float-right rounded-[8px] px-[24px] py-[12px] text-center bg-yellow-800 text-yellow-200 border-2 border-yellow-200 duration-200 hover:scale-95`}>Next</button>
         </div>
     </form>)
 }
