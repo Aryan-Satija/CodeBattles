@@ -11,7 +11,10 @@ export const AUTH = {
 }
 export const COURSE = {
     COURSE_CREATE_API : BASE_URL + "/course/createCourse",
-    COURSE_GET_CATEGORIES: BASE_URL + "/course/showAllCategories"
+    COURSE_GET_CATEGORIES: BASE_URL + "/course/showAllCategories",
+    COURSE_ADD_SECTION: BASE_URL + "/course/addSection",
+    COURSE_UPDATE_SECTION: BASE_URL + "/course/updateSection",
+    COURSE_DELETE_SECTION: BASE_URL + "/course/deleteSection",
 }
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",

@@ -12,3 +12,4 @@ const courseSlice = createSlice({
     }
 });
 export const {setCourse} = courseSlice.actions;
+export default courseSlice.reducer;
