@@ -5,7 +5,6 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.createCourse = async (req, res) => {
 	try {
 		const userId = req.user.id;
-		// console.log("userid", userId);
 		let {
 			courseName,
 			courseDescription,
@@ -105,7 +104,7 @@ exports.getAllCourses = async (req, res) => {
 				thumbnail: true,
 				instructor: true,
 				ratingAndReviews: true,
-				studentsEnroled: true,
+				studentsEnrolled: true,
 			}
 		)
 			.populate("instructor")
@@ -123,13 +122,9 @@ exports.getAllCourses = async (req, res) => {
 		});
 	}
 };
-
-//getCourseDetails
-exports.getCourseDetails = async (req, res) => {
+exports.getCourseDetails = async(req, res) => {
     try {
-            //get id
             const {courseId} = req.body;
-            //find course details
             const courseDetails = await Course.find(
                                         {_id:courseId})
                                         .populate(
@@ -141,7 +136,6 @@ exports.getCourseDetails = async (req, res) => {
                                             }
                                         )
                                         .populate("category")
-                                        //.populate("ratingAndreviews")
                                         .populate({
                                             path:"courseContent",
                                             populate:{
@@ -149,19 +143,16 @@ exports.getCourseDetails = async (req, res) => {
                                             },
                                         })
                                         .exec();
-
-                //validation
                 if(!courseDetails) {
                     return res.status(400).json({
                         success:false,
                         message:`Could not find the course with ${courseId}`,
                     });
                 }
-                //return response
                 return res.status(200).json({
                     success:true,
                     message:"Course Details fetched successfully",
-                    data:courseDetails,
+                    updatedCourse:courseDetails,
                 })
 
     }

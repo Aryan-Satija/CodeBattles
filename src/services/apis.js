@@ -15,6 +15,8 @@ export const COURSE = {
     COURSE_ADD_SECTION: BASE_URL + "/course/addSection",
     COURSE_UPDATE_SECTION: BASE_URL + "/course/updateSection",
     COURSE_DELETE_SECTION: BASE_URL + "/course/deleteSection",
+    COURSE_ADD_SUBSECTION: BASE_URL + "/course/addSubSection",
+    COURSE_GET_DETAILS: BASE_URL + "/course/getCourseDetails",
 }
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",

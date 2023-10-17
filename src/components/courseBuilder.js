@@ -26,9 +26,22 @@ export const CourseBuilder = ({setPage}) => {
     const {token} = useSelector((state)=>{
         return state.auth;
     });
-    const [modal, setModal] = useState(true);
+    const [activeSection, setActiveSection] = useState(null);
     const form = useForm();
     const {register, handleSubmit, setValue} = form;
+    const updateUI = async()=>{
+        try{
+            const response = await apiConnector("GET", 
+                                                COURSE.COURSE_GET_DETAILS,
+                                                {
+                                                      "courseId":course._id
+                                                });
+            dispatch(setCourse(response.data.updatedCourse));
+            localStorage.setItem("course", JSON.stringify(response.data.updatedCourse));
+        } catch(error){
+            console.log("error while updating ui", error);
+        }
+    }
     const addSection = async(data)=>{
         try{
             const response = await apiConnector(
@@ -173,7 +186,9 @@ export const CourseBuilder = ({setPage}) => {
                                     })
                                 }</div>
 
-                                <button className="flex items-center px-4 rounded-md gap-x-2 py-2 text-yellow-50 bg-yellow-800 border-2 border-yellow-50 duration-200 hover:scale-95">
+                                <button onClick={()=>{
+                                    setActiveSection(section._id);
+                                }} className="flex items-center px-4 rounded-md gap-x-2 py-2 text-yellow-50 bg-yellow-800 border-2 border-yellow-50 duration-200 hover:scale-95">
                                     <FaPlus className="text-lg" />
                                     <p>Add Lecture</p>
                                 </button>
@@ -223,7 +238,11 @@ export const CourseBuilder = ({setPage}) => {
                 }
             }}>NEXT</button>
         </div>
-        <subsectionModal modal={modal} refConstraints={refConstraints} />
+        {
+            activeSection && (
+                <SubsectionModal activeSection={activeSection} setActiveSection={setActiveSection} refConstraints={refConstraints} updateUI={updateUI}/>
+            )
+        }
     </div>
   )
 }
