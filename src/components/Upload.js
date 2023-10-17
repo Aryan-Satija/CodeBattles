@@ -1,40 +1,38 @@
-import { useEffect, useRef, useState } from "react"
-import { useDropzone } from "react-dropzone"
-import { FiUploadCloud } from "react-icons/fi"
-import "video-react"
-import { Player } from "video-react"
+import { useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { FiUploadCloud } from "react-icons/fi";
 
 export default function Upload({
   name,
   label,
   register,
   setValue,
+  video
 }) {
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [previewSource, setPreviewSource] = useState(false);
-  const [video, setVideo] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewSource, setPreviewSource] = useState(null);
   const inputRef = useRef(null);
+
   const onDrop = (acceptedFiles) => {
-    const file = acceptedFiles[0]
+    const file = acceptedFiles[0];
     if (file) {
-      previewFile(file)
-      setSelectedFile(file)
+      previewFile(file);
+      setSelectedFile(file);
     }
-  }
+  };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: !video
-      ? { "image/*": [".jpeg", ".jpg", ".png"] }
-      : { "video/*": [".mp4"] },
+    accept: !video ? "image/*" : "video/*",
     onDrop,
-  })
+  });
 
   const previewFile = (file) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setPreviewSource(reader.result)
-    }
-  }
+      setPreviewSource(reader.result);
+    };
+  };
 
   useEffect(() => {
     register(name, { required: true });
@@ -42,7 +40,7 @@ export default function Upload({
 
   useEffect(() => {
     setValue(name, selectedFile);
-  }, [selectedFile])
+  }, [selectedFile]);
 
   return (
     <div className="flex flex-col space-y-2">
@@ -63,7 +61,16 @@ export default function Upload({
                 className="h-full w-full rounded-md object-cover"
               />
             ) : (
-              <Player aspectRatio="16:9" playsInline src={previewSource} />
+              <video
+                controls={false} // Disable default video controls
+                autoPlay
+                loop
+                muted
+                className="w-full h-full"
+              >
+                <source src={previewSource} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             )}
           </div>
         ) : (
@@ -87,5 +94,5 @@ export default function Upload({
         )}
       </div>
     </div>
-  )
+  );
 }
