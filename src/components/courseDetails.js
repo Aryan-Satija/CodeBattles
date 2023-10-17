@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Upload from './Upload';
 import { apiConnector } from '../services/apiConnector';
 import { COURSE } from '../services/apis';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { setCourse } from '../slices/courseSlice';
 const CourseDetails = ({setPage}) => {
     const form = useForm();
+    const dispatch = useDispatch();
 	const displayTag = (event)=>{
 		if(event.keyCode === 13 && event.target.value !== ''){
 			setTagList((prev)=>{
@@ -54,16 +56,18 @@ const CourseDetails = ({setPage}) => {
             formData.append("courseDescription", data.courseDescription);
             formData.append("whatYouWillLearn", data.courseBenefits);
             formData.append("price", data.price);
-            formData.append("tag", data.tag);
+            formData.append("tag", JSON.stringify(data.tag));
             formData.append("category", data.courseCategory);
             formData.append("thumbnailImage", data.courseImage);
             formData.append("status", 'Draft');
-            formData.append("instructions", instructionList);
+            formData.append("instructions", JSON.stringify(instructionList));
             const response = await apiConnector("POST", COURSE.COURSE_CREATE_API, formData, {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
             });
-            console.log(response);
+            console.log("response masala", response.data.data);
+            dispatch(setCourse(response.data.data));
+            localStorage.setItem("course",  JSON.stringify(response.data.data));
         } catch(error){
             toast.error('Something Went Wrong', {
                 position: "top-right",

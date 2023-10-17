@@ -17,7 +17,7 @@ const steps = [
   	}
 ]
 const CreateCourse = () => {
-	const [page, setPage] = useState(1);
+	const [page, setPage] = useState(2);
 	return (
     <div className='w-full min-h-screen flex gap-4 items-start justify-between pr-8'>
 		<div className='w-full flex flex-col gap-8'>
@@ -53,7 +53,7 @@ const CreateCourse = () => {
 			}
 			{
 				page === 2 &&
-				<CourseBuilder/>
+				<CourseBuilder setPage={setPage}/>
 			}
 		</div>
 		<div className="bg-richblack-800 p-[24px] max-w-[380px] text-richblack-100 rounded-lg flex flex-col gap-4">
