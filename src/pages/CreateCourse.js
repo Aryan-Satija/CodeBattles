@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {FaCheck} from 'react-icons/fa6'
 import CourseDetails from '../components/courseDetails';
 import {CourseBuilder} from '../components/courseBuilder';
+import {CoursePublish} from '../components/coursePublish';
 const steps = [
   	{
 		id: 1,
@@ -17,9 +18,9 @@ const steps = [
   	}
 ]
 const CreateCourse = () => {
-	const [page, setPage] = useState(2);
+	const [page, setPage] = useState(1);
 	return (
-    <div className='w-full min-h-screen flex gap-4 items-start justify-between pr-8'>
+    <div className='w-full min-h-screen flex flex-col lg:flex-row gap-4 items-start justify-between pr-8 pb-8'>
 		<div className='w-full flex flex-col gap-8'>
 			<div className='text-richblack-50 text-2xl'>My Course</div>
 			<div className="flex items-center w-full justify-around relative">
@@ -28,24 +29,24 @@ const CreateCourse = () => {
 						if(step.id == page)
 							return ( <div key={step.id} className="flex flex-col justify-center items-center gap-2">
 									<div className="bg-yellow-900 w-[2.5rem] h-[2.5rem] rounded-full border-2 border-yellow-200 text-yellow-200 flex items-center justify-center">{step.id}</div>
-									<div className="text-richblack-50">{step.title}</div>
+									<div className="text-richblack-50 hidden md:block">{step.title}</div>
 								</div>)
 						else if(step.id < page){
 							return (<div key={step.id} className="flex flex-col justify-center items-center gap-2">
 								<div className="bg-yellow-900 w-[2.5rem] h-[2.5rem] rounded-full border-2 border-yellow-200 text-yellow-200 flex items-center justify-center"><FaCheck/></div>
-								<div className="text-richblack-400">{step.title}</div>
+								<div className="text-richblack-400 hidden md:block">{step.title}</div>
 							</div>)
 						}
 						else{
 							return (<div key={step.id} className="flex flex-col justify-center items-center gap-2">
 								<div className="bg-richblack-800 w-[2.5rem] h-[2.5rem] rounded-full border-2 border-richblack-100 text-richblack-100 flex items-center justify-center">{step.id}</div>
-								<div className="text-richblack-400">{step.title}</div>
+								<div className="text-richblack-400 hidden md:block">{step.title}</div>
 							</div>)
 						}
 					})
 				}
-				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 1 ? 'border-yellow-400' : 'border-richblack-200' }  top-5 left-44 absolute`}></div>
-				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 2 ? 'border-yellow-400' : 'border-richblack-200' } top-5 right-44 absolute`}></div>
+				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 1 ? 'border-yellow-400' : 'border-richblack-200' }  top-5 left-44 2xl:block hidden  absolute`}></div>
+				<div className={`w-[25%] h-2 border-t-2 border-dotted ${page > 2 ? 'border-yellow-400' : 'border-richblack-200' } top-5 right-44 2xl:block hidden absolute`}></div>
 			</div>
 			{
 				page === 1 && 
@@ -55,8 +56,12 @@ const CreateCourse = () => {
 				page === 2 &&
 				<CourseBuilder setPage={setPage}/>
 			}
+			{
+				page === 3 &&
+				<CoursePublish setPage={setPage}/>
+			}
 		</div>
-		<div className="bg-richblack-800 p-[24px] max-w-[380px] text-richblack-100 rounded-lg flex flex-col gap-4">
+		<div className="bg-richblack-800 p-[24px] w-full lg:w-[580px] text-richblack-100 rounded-lg flex flex-col gap-4">
 			<div className="text-md font-bold">⚡Course Upload Tips</div>
 			<div className="flex text-richblack-200 flex-col gap-2 text-sm">
 				<div>• Set the Course Price option or make it free.</div>

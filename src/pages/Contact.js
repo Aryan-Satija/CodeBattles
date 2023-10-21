@@ -51,7 +51,7 @@ function Contact(){
             <div className="">
                     <div className="text-richblack-5 text-4xl text-center">Got an Idea? We’ve got the skills. Let’s team up</div>
                     <div className="text-richblack-500 text-base text-center mb-8">Tall us more about yourself and what you’re got in mind.</div>
-                    <form className="flex flex-col items-center gap-5">
+                    <form className="flex flex-col items-center gap-2">
                         <div className="flex items-center justify-between w-full">
                             <div className="w-[48%]">
                                 <label htmlFor="fname" className="text-richblack-5">First Name</label>

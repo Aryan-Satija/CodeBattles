@@ -3,7 +3,9 @@ const router = express.Router();
 const {
   createCourse,
   getAllCourses,
+  getAllInstructorCourses,
   getCourseDetails,
+  deleteCourse
 } = require("../controllers/Course");
 const {
   showAllCategories,
@@ -33,7 +35,9 @@ router.post("/deleteSection", auth, isInstructor, deleteSection)
 router.post("/updateSubSection", auth, isInstructor, updateSubSection)
 router.post("/deleteSubSection", auth, isInstructor, deleteSubSection)
 router.post("/addSubSection", auth, isInstructor, createSubSection)
-router.get("/getAllCourses", getAllCourses)
+router.post("/getInstructorCourses", auth, isInstructor, getAllInstructorCourses)
+router.get("/getAllCourses", getAllCourses);
+router.delete("/deleteCourse", auth, isInstructor, deleteCourse)
 router.post("/getCourseDetails", getCourseDetails)
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategories)
@@ -41,5 +45,4 @@ router.post("/getCategoryPageDetails", categoryPageDetails)
 router.post("/createRating", auth, isStudent, createRating)
 router.get("/getAverageRating", getAverageRating)
 router.get("/getReviews", getAllRating)
-
-module.exports = router
+module.exports = router;

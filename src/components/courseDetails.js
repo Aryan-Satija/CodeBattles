@@ -7,8 +7,10 @@ import { COURSE } from '../services/apis';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { setCourse } from '../slices/courseSlice';
+import { Spinner } from './Spinner';
 const CourseDetails = ({setPage}) => {
     const form = useForm();
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 	const displayTag = (event)=>{
 		if(event.keyCode === 13 && event.target.value !== ''){
@@ -48,9 +50,10 @@ const CourseDetails = ({setPage}) => {
         getCategories();
         register("tag");
 	}, []);
-	const submitHandler = async(data)=>{
+	const util = async(data)=>{
         console.log('data', data);
         try{
+            setLoading(true);
             const formData = new FormData();
             formData.append("courseName", data.courseName);
             formData.append("courseDescription", data.courseDescription);
@@ -65,25 +68,28 @@ const CourseDetails = ({setPage}) => {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
             });
-            console.log("response masala", response.data.data);
+            console.log("response", response.data.data);
             dispatch(setCourse(response.data.data));
             localStorage.setItem("course",  JSON.stringify(response.data.data));
+            setLoading(false);
+            setPage(2);
         } catch(error){
-            toast.error('Something Went Wrong', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
             console.log(error);
         }
-        setPage(2);
     }  
-    return (<form onSubmit={handleSubmit(submitHandler)} className='bg-richblack-800 p-[24px] rounded-lg flex flex-col gap-4'>
+	const submitHandler = async(data)=>{
+        toast.promise(
+            util(data),
+            {
+              pending: 'Loading',
+              success: 'Course Created Successfully',
+              error: 'Something went wrong',
+              theme:'dark'
+            }
+        )
+    }  
+    return (
+        <form onSubmit={handleSubmit(submitHandler)} className='bg-richblack-800 p-[24px] rounded-lg flex flex-col gap-4'>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Course Title
             <input placeholder='Enter Your Name'  {...register("courseName")} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
@@ -145,8 +151,8 @@ const CourseDetails = ({setPage}) => {
             })
         }
         </div>
-        <div>
-            <button type='submit' className={`cursor-pointer float-right rounded-[8px] px-[24px] py-[12px] text-center bg-yellow-800 text-yellow-200 border-2 border-yellow-200 duration-200 hover:scale-95`}>Next</button>
+        <div className='w-full'>
+            <button type='submit' className={"float-right cursor-pointer gap-x-2 rounded-md bg-yellow-200 py-[8px] px-[20px] font-semibold text-richblack-800 duration-200 hover:scale-95"}>Next</button>
         </div>
     </form>)
 }
