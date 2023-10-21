@@ -12,7 +12,7 @@ root.render(
     <Provider store={store}>
         <BrowserRouter>
         	<App/>
-            <ToastContainer/>
+            <ToastContainer theme="dark"/>
         </BrowserRouter>
     </Provider>
 );

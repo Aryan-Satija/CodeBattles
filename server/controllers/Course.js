@@ -122,6 +122,38 @@ exports.getAllCourses = async (req, res) => {
 		});
 	}
 };
+exports.getAllInstructorCourses = async(req, res)=>{
+	try{
+		const {instructorId} = req.body;
+		const userData = await User.findById(instructorId)
+								.populate({
+									path:"courses",
+									populate:{
+										path:"courseContent",
+										populate:{
+											path: "subSection"
+										}
+									}
+								})
+								.exec();
+		if(!userData){
+			return res.status(401).json({
+				success: false,
+				message: "Instructor Not Found"
+			})
+		}
+		return res.status(200).json({
+			success: true,
+			courses: userData.courses
+		})
+	} catch(err){
+		return res.status(500).json({
+			success: false,
+			message: 'Couldn\'t fetch data',
+			error: err.message 
+		})
+	}
+}
 exports.getCourseDetails = async(req, res) => {
     try {
             const {courseId} = req.body;
@@ -163,4 +195,26 @@ exports.getCourseDetails = async(req, res) => {
             message:error.message,
         });
     }
+}
+exports.deleteCourse = async(req, res)=>{
+	try{
+		const {courseId, instructorId} = req.body;
+		await Course.findByIdAndDelete(courseId);
+		await User.findByIdAndUpdate({_id :instructorId}, 
+									{
+										$pull:{
+											courses: courseId
+										}
+									})
+		return res.status(200).json({
+			success: true,
+			message: "Course Deleted Successfully"
+		})
+	} catch(err){
+		return res.status(500).json({
+			success: false,
+			message: "Something Went Wrong",
+			error: err.message
+		})
+	}
 }

@@ -16,6 +16,16 @@ import { SubsectionModal } from './SubsectionModal';
 import CTAbutton from './CTAbutton';
 import { useRef } from 'react';
 export const CourseBuilder = ({setPage}) => {
+    const [edit, setEdit] = useState(false);
+    const [add, setAdd] = useState(false);
+    const [view, setView] = useState(false);
+    const closeModal = ()=>{
+        setActiveSection(null);
+        setActiveSubSection(null);
+        setEdit(false);
+        setAdd(false);
+        setView(false);
+    }
     const [editSectionName, setEditSectionName] = useState(false)
     const {course} = useSelector(state => {
         return state.course;
@@ -27,22 +37,24 @@ export const CourseBuilder = ({setPage}) => {
         return state.auth;
     });
     const [activeSection, setActiveSection] = useState(null);
+    const [activeSubSection, setActiveSubSection] = useState(null);
     const form = useForm();
-    const {register, handleSubmit, setValue} = form;
+    const {register, handleSubmit, getValues, setValue} = form;
     const updateUI = async()=>{
         try{
-            const response = await apiConnector("GET", 
+            const response = await apiConnector("POST", 
                                                 COURSE.COURSE_GET_DETAILS,
                                                 {
                                                       "courseId":course._id
                                                 });
-            dispatch(setCourse(response.data.updatedCourse));
-            localStorage.setItem("course", JSON.stringify(response.data.updatedCourse));
+            console.log("updatedUI->", response);
+            dispatch(setCourse(response.data.updatedCourse[0]));
+            localStorage.setItem("course", JSON.stringify(response.data.updatedCourse[0]));
         } catch(error){
             console.log("error while updating ui", error);
         }
     }
-    const addSection = async(data)=>{
+    const utiladd = async(data)=>{
         try{
             const response = await apiConnector(
                 "POST",
@@ -57,30 +69,22 @@ export const CourseBuilder = ({setPage}) => {
             )
             dispatch(setCourse(response.data.updatedCourse));
             localStorage.setItem("course", JSON.stringify(response.data.updatedCourse));
-            toast.success(`Section Added Successfully`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
         } catch(error){
-            toast.error(`Something Went Wrong`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            console.log(error);
         }
     }
-    const deleteSection = async(ID)=>{
+    const addSection = async(data)=>{
+        await toast.promise(
+            utiladd(data),
+            {
+              pending: 'Loading',
+              success: 'Section Created Successfully',
+              error: 'Something went wrong',
+            }
+        )
+    }
+
+    const utildelete = async(ID)=>{
         try{
             const response = await apiConnector("POST", 
                                                 COURSE.COURSE_DELETE_SECTION, 
@@ -93,33 +97,22 @@ export const CourseBuilder = ({setPage}) => {
                                                 })
             dispatch(setCourse(response.data.updatedCourse));
             localStorage.setItem("course", JSON.stringify(response.data.updatedCourse));
-            toast.success(`Section Deleted Successfully`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
         }
          catch(err){
             console.log(err);
-            console.log(err.message);
-            toast.error(`Something Went Wrong`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
         }
     }
-    
+    const deleteSection = async(ID)=>{
+        toast.promise(
+            utildelete(ID),
+            {
+              pending: 'Loading',
+              success: 'Section Created Successfully',
+              error: 'Something went wrong',
+            }
+        )
+    }
+
     return (
     <div ref={refConstraints} className='space-y-8 relative rounded-md border-1 border-richblack-700 bg-richblack-800 p-6'>
         <p className='text-2xl font-semibold text-richblack-5'>Course Builder</p>
@@ -134,9 +127,9 @@ export const CourseBuilder = ({setPage}) => {
                 />
             </div>
             <div className='flex items-end gap-2 mt-4'>
-                <button className={`cursor-pointer rounded-[8px] px-[24px] py-[12px] text-center flex items-center justify-between gap-2 bg-richblack-900 text-richblack-50 duration-200 hover:scale-95`}>{
+                <button className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-yellow-200 py-[8px] px-[20px] font-semibold text-richblack-800 duration-200 hover:scale-95`}>{
                     editSectionName ? "Edit Section Name" : "Create Section" 
-                } <IoAddCircleOutline size={20} className="text-yellow-50 font-bold"/></button>
+                } <IoAddCircleOutline size={20} className="text-richblack-800 font-bold"/></button>
                 {
                     editSectionName && <button className='text-sm text-richblack-300 underline'>Cancel Edit</button>
                 }
@@ -147,7 +140,7 @@ export const CourseBuilder = ({setPage}) => {
                 <div className='rounded-lg bg-richblack-700 p-6 px-8'>
                     {
                         course?.courseContent.map((section)=>{
-                            return (<details key={section._id} open>
+                            return (<details key={section._id} close>
                                 <summary className='flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2'>
                                     <div className='flex items-center gap-2'>
                                         <RxDropdownMenu className='text-2xl text-richblack-50'/>
@@ -172,10 +165,22 @@ export const CourseBuilder = ({setPage}) => {
                                         >
                                             <div className='flex items-center gap-x-3 py-2 '>
                                                 <RxDropdownMenu className='text-2xl text-richblack-50 '/>
-                                                <p className='font-semibold text-richblack-50'>{data.title}</p>
+                                                <p onClick={()=>{
+                                                        setActiveSection(section._id);
+                                                        setActiveSubSection(data);
+                                                        setAdd(false);
+                                                        setView(true);
+                                                        setEdit(false);
+                                                }} className='font-semibold text-richblack-50'>{data.title}</p>
                                             </div>
-                                            <div>
-                                                <button>
+                                            <div className='flex gap-x-2 items-center'>
+                                                <button onClick={()=>{
+                                                    setActiveSection(section._id);
+                                                    setActiveSubSection(data);
+                                                    setAdd(false);
+                                                    setView(false);
+                                                    setEdit(true);
+                                                }}>
                                                     <MdEdit className='text-xl text-richblack-300'/>
                                                 </button>
                                                 <button>
@@ -188,7 +193,10 @@ export const CourseBuilder = ({setPage}) => {
 
                                 <button onClick={()=>{
                                     setActiveSection(section._id);
-                                }} className="flex items-center px-4 rounded-md gap-x-2 py-2 text-yellow-50 bg-yellow-800 border-2 border-yellow-50 duration-200 hover:scale-95">
+                                    setAdd(true);
+                                    setView(false);
+                                    setEdit(false);
+                                }} className="flex items-center px-4 rounded-md gap-x-2 py-2 text-yellow-50 duration-200 hover:scale-95">
                                     <FaPlus className="text-lg" />
                                     <p>Add Lecture</p>
                                 </button>
@@ -199,10 +207,10 @@ export const CourseBuilder = ({setPage}) => {
             )
         }
         <div className='flex justify-end gap-x-4'>
-            <button className='flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-900 py-[8px] px-[20px] font-semibold text-richblack-50 duration-200 hover:scale-95' onClick={()=>{
+            <button className="flex cursor-pointer items-center gap-x-2 rounded-md bg-yellow-200 py-[8px] px-[20px] font-semibold text-richblack-800 duration-200 hover:scale-95" onClick={()=>{
                 setPage(1);
             }}>BACK</button>
-            <button className='flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-900 py-[8px] px-[20px] font-semibold text-richblack-50 duration-200 hover:scale-95' onClick={()=>{
+            <button className="flex cursor-pointer items-center gap-x-2 rounded-md bg-yellow-200 py-[8px] px-[20px] font-semibold text-richblack-800 duration-200 hover:scale-95" onClick={()=>{
                 if(course && course.courseContent.length >= 1){
                     if(course.courseContent.some((section)=>{
                         if(section.length === 0)
@@ -240,7 +248,7 @@ export const CourseBuilder = ({setPage}) => {
         </div>
         {
             activeSection && (
-                <SubsectionModal activeSection={activeSection} setActiveSection={setActiveSection} refConstraints={refConstraints} updateUI={updateUI}/>
+                <SubsectionModal activeSection={activeSection} getValues={getValues} activeSubSection={activeSubSection} closeModal={closeModal} refConstraints={refConstraints} updateUI={updateUI} view={view} edit={edit} add={add}/>
             )
         }
     </div>

@@ -19,6 +19,7 @@ import { UseSelector, useSelector } from "react-redux";
 import EnrolledCourses from "./pages/EnrolledCourses";
 import Wishlist from "./pages/Wishlist";
 import CreateCourse from "./pages/CreateCourse";
+import { MyCourses } from "./pages/MyCourses";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -49,6 +50,7 @@ function App(){
             user && user.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
               <>
                 <Route exact path="/dashboard/add-course" element={<CreateCourse/>}/>
+                <Route exact path="/dashboard/courses" element={<MyCourses/>}/>
               </>
             )
           }
