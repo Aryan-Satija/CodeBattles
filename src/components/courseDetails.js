@@ -7,7 +7,6 @@ import { COURSE } from '../services/apis';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { setCourse } from '../slices/courseSlice';
-import { Spinner } from './Spinner';
 const CourseDetails = ({setPage}) => {
     const form = useForm();
     const [loading, setLoading] = useState(false);
@@ -38,6 +37,7 @@ const CourseDetails = ({setPage}) => {
 	const [instructionValue, setInstructionValue] = useState('');
 	const [categoryList, setCategoryList] = useState([]);
     const {token} = useSelector(state=>state.auth);
+    const {course} = useSelector(state=>state.course);
 	useEffect(()=>{
 		setValue("tag", tagList);
 	}, [tagList]);
@@ -48,10 +48,16 @@ const CourseDetails = ({setPage}) => {
             setCategoryList(response?.data?.data);
         }
         getCategories();
+        if(course){
+            setValue("courseName", course.courseName);
+            setValue("courseDescription", course.courseDescription);
+            setValue("whatYouWillLearn", course.whatYouWillLearn);
+            setValue("price", course.price);
+            setValue("courseImage", course.thumbnail);
+        }
         register("tag");
 	}, []);
 	const util = async(data)=>{
-        console.log('data', data);
         try{
             setLoading(true);
             const formData = new FormData();
@@ -59,11 +65,11 @@ const CourseDetails = ({setPage}) => {
             formData.append("courseDescription", data.courseDescription);
             formData.append("whatYouWillLearn", data.courseBenefits);
             formData.append("price", data.price);
-            formData.append("tag", JSON.stringify(data.tag));
+            formData.append("tag", data.tag);
             formData.append("category", data.courseCategory);
             formData.append("thumbnailImage", data.courseImage);
             formData.append("status", 'Draft');
-            formData.append("instructions", JSON.stringify(instructionList));
+            formData.append("instructions", instructionList);
             const response = await apiConnector("POST", COURSE.COURSE_CREATE_API, formData, {
                 "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
@@ -75,11 +81,20 @@ const CourseDetails = ({setPage}) => {
             setPage(2);
         } catch(error){
             console.log(error);
+            return false;
         }
+        return true;
     }  
 	const submitHandler = async(data)=>{
         toast.promise(
-            util(data),
+            new Promise(async(resolve, reject)=>{
+                if(await util(data))
+                    resolve(1);
+                else{
+                    const error = new Error("something went wrong");
+                    reject(error);
+                }
+            }),
             {
               pending: 'Loading',
               success: 'Course Created Successfully',
@@ -130,7 +145,9 @@ const CourseDetails = ({setPage}) => {
             name="courseImage"
             label="Course Thumbnail"
             register={register}
-            setValue={setValue}/>
+            setValue={setValue}
+            url={course ? course.thumbnail : null}    
+            />
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Enter Benefits Of The Course
             <textarea placeholder='Enter Description' {...register("courseBenefits")} rows={4} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
@@ -140,12 +157,12 @@ const CourseDetails = ({setPage}) => {
             <input placeholder='Enter Instructions'  value={instructionValue} onChange={(event)=>{
                 setInstructionValue(event.target.value);
             }} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
-            <div className='font-bold text-yellow-400 text-base' onClick={addInstruction}>ADD</div>
         </label>
+        <div className='cursor-pointer font-bold text-yellow-400 text-base text-start px-2'  onClick={addInstruction}>ADD</div>
         <div className='flex flex-col gap-1 items-start'>
         {
             instructionList.map((instruction, index)=>{
-                return (<div key={index} className='text-richblack-200 flex gap-2 items-baseline'>
+                return (<div key={index} className='text-richblack-200 flex gap-2 px-2 items-baseline'>
                     {instruction} <span className='text-richblack-400 text-sm underline cursor-pointer duration-200 hover:text-richblack-100' onClick={()=>{deleteInstruction(index)}}>clear</span>
                 </div>)
             })

@@ -6,12 +6,15 @@ import {toast} from 'react-toastify';
 import { FiEdit2 } from "react-icons/fi"
 import { COURSE } from '../services/apis';
 import { RiDeleteBin6Line } from "react-icons/ri"
-import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
-import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCourse } from '../slices/courseSlice';
 export const MyCourses = () => {
     const [courses, setCourses] = useState([]);
     const {user} = useSelector(state => state.profile);
     const {token} = useSelector(state => state.auth);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     console.log("user", user._id);
     const fetchCourses = async()=>{
         try{
@@ -103,7 +106,11 @@ export const MyCourses = () => {
                                 ₹{course.price}
                             </div>
                             <div className="text-sm flex-1 flex justify-start gap-x-2 font-medium text-richblack-200">
-                                <button className='cursor-pointer duration-200 hover:text-caribbeangreen-400 hover:scale-105'><FiEdit2 size={20} /></button>
+                                <button className='cursor-pointer duration-200 hover:text-caribbeangreen-400 hover:scale-105' onClick={()=>{
+                                    dispatch(setCourse(course));
+                                    localStorage.setItem("course", JSON.stringify(course));
+                                    navigate('/dashboard/add-course')
+                                }}><FiEdit2 size={20} /></button>
                                 <button className='cursor-pointer duration-200 hover:text-pink-400 hover:scale-105' onClick={()=>{deleteSection(course._id)}}><RiDeleteBin6Line size={20} /></button>
                             </div>
                         </div>

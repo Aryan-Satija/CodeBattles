@@ -2,18 +2,16 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch} from 'react-redux';
 import { IoAddCircleOutline } from "react-icons/io5"
 import { AiFillCaretDown } from "react-icons/ai"
-import { FaPlus } from "react-icons/fa"
+import { FaPlus, FaSlidersH } from "react-icons/fa"
 import { MdEdit } from "react-icons/md"
 import { RiDeleteBin6Line } from "react-icons/ri"
-import { RxCross2, RxDropdownMenu } from "react-icons/rx"
+import { RxDropdownMenu } from "react-icons/rx"
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { apiConnector } from '../services/apiConnector';
 import { COURSE } from '../services/apis';
 import { setCourse } from '../slices/courseSlice';
-import { motion } from 'framer-motion';
 import { SubsectionModal } from './SubsectionModal';
-import CTAbutton from './CTAbutton';
 import { useRef } from 'react';
 export const CourseBuilder = ({setPage}) => {
     const [edit, setEdit] = useState(false);
@@ -26,7 +24,7 @@ export const CourseBuilder = ({setPage}) => {
         setAdd(false);
         setView(false);
     }
-    const [editSectionName, setEditSectionName] = useState(false)
+    const [editSectionName, setEditSectionName] = useState(null)
     const {course} = useSelector(state => {
         return state.course;
     });
@@ -83,9 +81,49 @@ export const CourseBuilder = ({setPage}) => {
             }
         )
     }
-
-    const utildelete = async(ID)=>{
+    const utilupdate = async(data)=>{
         try{
+            await apiConnector(
+                "POST",
+                COURSE.COURSE_UPDATE_SECTION,
+                {
+                    "sectionName":data.sectionName,
+                    "sectionId" : editSectionName
+                },
+                {
+                    Authorization : `Bearer ${token}`
+                }
+            )
+            await updateUI();
+            setEditSectionName(null);
+            setValue("sectionName", "");
+            return true;
+        } catch(error){
+            console.log(error);
+            return false;
+        }
+    }
+    const updateSection = async(data)=>{
+        await toast.promise(
+            new Promise(async(resolve, reject)=>{
+                if(await utilupdate(data)) resolve(1);
+                else{
+                    const error = new Error("Something went wrong");
+                    reject(error);
+                }
+            }),
+            {
+              pending: 'Loading',
+              success: 'Updated Successfully',
+              error: 'Something went wrong',
+            }
+        )
+    }
+    const utildelete = async(ID, subsectionIDs)=>{
+        try{
+            subsectionIDs.forEach(async(subsec) => {
+                await utildelete2(subsec._id, ID);
+            });
             const response = await apiConnector("POST", 
                                                 COURSE.COURSE_DELETE_SECTION, 
                                                 {
@@ -94,29 +132,69 @@ export const CourseBuilder = ({setPage}) => {
                                                 },
                                                 {
                                                     Authorization: `Bearer ${token}`
-                                                })
+                                                });
             dispatch(setCourse(response.data.updatedCourse));
             localStorage.setItem("course", JSON.stringify(response.data.updatedCourse));
+            return true;
         }
-         catch(err){
+        catch(err){
             console.log(err);
+            return false;
         }
     }
-    const deleteSection = async(ID)=>{
+    const deleteSection = async(ID, subsectionIDs)=>{
         toast.promise(
-            utildelete(ID),
+            new Promise(async(resolve, reject)=>{
+                if(await utildelete(ID, subsectionIDs)) resolve(1);
+                else{
+                    const error = new Error("Something went wrong");
+                    reject(error);
+                }
+            }),
             {
               pending: 'Loading',
-              success: 'Section Created Successfully',
+              success: 'Section Deleted Successfully',
               error: 'Something went wrong',
             }
         )
     }
-
+    const utildelete2 = async(subsectionID, sectionID)=>{
+        try{
+            apiConnector("POST", 
+            COURSE.COURSE_DELETE_SUBSECTION,
+            {
+                subSectionId:subsectionID,
+                sectionId:sectionID
+            }, 
+            {
+                Authorization : `Bearer ${token}`
+            });
+            updateUI();
+            return true;
+        } catch(err){
+            return false;
+        }
+    }
+    const deleteSubsection = async(subsectionID, sectionID)=>{
+        toast.promise(
+            new Promise(async(resolve, reject)=>{
+                if(await utildelete2(subsectionID, sectionID)) resolve(1);
+                else{
+                    const error = new Error("Something went wrong");
+                    reject(error);
+                }
+            }),
+            {
+              pending: 'Loading',
+              success: 'Subsection Deleted Successfully',
+              error: 'Something went wrong',
+            }
+        )
+    }
     return (
     <div ref={refConstraints} className='space-y-8 relative rounded-md border-1 border-richblack-700 bg-richblack-800 p-6'>
         <p className='text-2xl font-semibold text-richblack-5'>Course Builder</p>
-        <form onSubmit={handleSubmit(addSection)}>
+        <form onSubmit={editSectionName ? handleSubmit(updateSection) : handleSubmit(addSection)}>
             <div className='flex flex-col space-y-2'>
                 <label className='text-sm text-richblack-5' htmlFor='sectionName'>Section Name<sup className='text-pink-200'>*</sup></label>
                 <input
@@ -131,7 +209,10 @@ export const CourseBuilder = ({setPage}) => {
                     editSectionName ? "Edit Section Name" : "Create Section" 
                 } <IoAddCircleOutline size={20} className="text-richblack-800 font-bold"/></button>
                 {
-                    editSectionName && <button className='text-sm text-richblack-300 underline'>Cancel Edit</button>
+                    editSectionName && <button onClick={()=>{
+                                                setValue("sectionName", "");
+                                                setEditSectionName(null);
+                                            }} className='text-sm text-richblack-300 underline'>Cancel Edit</button>
                 }
             </div>
         </form>
@@ -147,10 +228,13 @@ export const CourseBuilder = ({setPage}) => {
                                         <p className='font-semibold text-richblack-50'>{section.sectionName}</p>
                                     </div>
                                     <div className='flex items-center gap-2'>
-                                        <button>
+                                        <button onClick={()=>{
+                                            setValue("sectionName", section.sectionName);
+                                            setEditSectionName(section._id);
+                                        }}>
                                             <MdEdit className='text-xl text-richblack-300'/>
                                         </button>
-                                        <button onClick={() => {deleteSection(section._id)}}>
+                                        <button onClick={()=>{deleteSection(section._id, section.subSection)}}>
                                             <RiDeleteBin6Line className="text-xl text-richblack-300" />
                                         </button>
                                         <span className="font-medium text-richblack-300">|</span>
@@ -183,7 +267,7 @@ export const CourseBuilder = ({setPage}) => {
                                                 }}>
                                                     <MdEdit className='text-xl text-richblack-300'/>
                                                 </button>
-                                                <button>
+                                                <button onClick={()=>{deleteSubsection(data._id, section._id)}}>
                                                     <RiDeleteBin6Line className='text-xl text-richblack-300'/>
                                                 </button>
                                             </div>

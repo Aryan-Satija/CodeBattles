@@ -15,6 +15,8 @@ exports.createCourse = async (req, res) => {
 			status,
 			instructions,
 		} = req.body;
+		tag = tag.split(',');
+		instructions = instructions.split(',');
 		const thumbnail = req.files.thumbnailImage;
 		if (
 			!courseName ||

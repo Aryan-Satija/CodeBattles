@@ -29,9 +29,10 @@ function Login(){
                 'email': formData.email,
                 'password': formData.password
             });
-            console.log("********************************");
-            console.log(response);
-            console.log("********************************");
+            dispatch(setToken(JSON.stringify(response.data.token)));
+            localStorage.setItem("token", JSON.stringify(response.data.token));
+            localStorage.setItem("user",  JSON.stringify(response.data.user));
+            dispatch(setUser(response.data.user));
             toast.success(`Welcome ${response.data.user.firstName}`, {
                 position: "top-right",
                 autoClose: 5000,
@@ -42,11 +43,6 @@ function Login(){
                 progress: undefined,
                 theme: "dark",
             });  
-            console.log(response);
-            dispatch(setToken(JSON.stringify(response.data.token)));
-            localStorage.setItem("token", JSON.stringify(response.data.token));
-            localStorage.setItem("user",  JSON.stringify(response.data.user));
-            dispatch(setUser(response.data.user));
             navigate('/dashboard/profile');
             dispatch(setLoading(false));
         } catch(error){

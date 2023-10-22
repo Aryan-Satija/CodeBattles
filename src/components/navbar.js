@@ -3,9 +3,26 @@ import { NavbarLinks } from "../data/navbar-links";
 import logo from '../assets/Logo/logo.svg'
 import { matchPath, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { CATEGORIES } from "../services/apis";
+import { useState, useEffect } from "react";
+import { apiConnector } from "../services/apiConnector";
 function Navbar(){
     const location = useLocation();
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    async function fetchCategories(){
+        try{
+            const response = await apiConnector("GET", CATEGORIES.CATEGORIES_API);
+            console.log(response);
+            setCategories(response.data.data);
+        } catch(error){
+            console.log(error.message);
+            console.log('couldn\'t fetch categories')
+        }
+    }
+    useEffect(()=>{
+        fetchCategories();
+    }, []);
     function util(g_path){
         return matchPath({path: g_path}, location.pathname);
     }
@@ -21,8 +38,18 @@ function Navbar(){
                                     {
                                         link.title
                                     }
-                                    <div className="lg:w-[20rem] py-4 px-2 bg-richblack-700 rounded-md invisible group-hover:visible absolute top-10 -left-[7.5rem]"></div>
-                                    <div className="w-6 h-6 rotate-45 bg-richblack-700 absolute invisible group-hover:visible top-8 left-8"></div>
+                                    <div className="w-6 h-6 rotate-45 bg-richblack-5 absolute invisible group-hover:visible top-8 left-8"></div>
+                                    <div className="lg:w-[20rem] py-4 px-2 bg-richblack-5 rounded-md invisible group-hover:visible absolute top-10 -left-[7.5rem]">
+                                    {
+                                        categories.map((category)=>{
+                                            return (<div key={category._id} className="text-md text-richblack-700 hover:bg-richblack-900/20 text-center rounded-md">
+                                                {
+                                                    category.name
+                                                }
+                                            </div>)
+                                        })
+                                    }
+                                    </div>
                                 </li>
                             }
                             else{

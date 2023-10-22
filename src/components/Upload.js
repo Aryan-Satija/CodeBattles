@@ -12,7 +12,6 @@ export default function Upload({
 }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(url ? url: null);
-  console.log("previewSource", previewSource);
   const inputRef = useRef(null);
 
   const onDrop = (acceptedFiles) => {
