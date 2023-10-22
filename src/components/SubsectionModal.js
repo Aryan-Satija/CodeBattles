@@ -24,35 +24,23 @@ export const SubsectionModal = ({activeSection, activeSubSection, closeModal, re
                 "Content-Type": "multipart/form-data",
                 Authorization : `Bearer ${token}`
             });
-            toast.success(`Section Added Successfully`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
             updateUI();
             closeModal();
+            return true;
         } catch(error){
-            toast.error(`Something Went Wrong`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            return false;
             console.log("error while adding subsection", error);
         }
     }
     const submitHandler = async(data)=>{
         await toast.promise(
-            util(data),
+            new Promise(async(resolve, reject)=>{
+                if(await util(data)) resolve(1);
+                else{
+                    const error = new Error("Something went wrong");
+                    reject(error);
+                }
+            }),
             {
               pending: 'Loading',
               success: 'SubSection Created Successfully',
@@ -98,6 +86,7 @@ export const SubsectionModal = ({activeSection, activeSubSection, closeModal, re
                         placeholder="Enter Lecture Title"
                         {...register("lectureTitle", { required: true })}
                         className="bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none"
+                        readOnly={view}
                     />
                 </div>
                 <div className="flex flex-col space-y-2">
@@ -105,10 +94,11 @@ export const SubsectionModal = ({activeSection, activeSubSection, closeModal, re
                     Lecture Description <sup className="text-pink-200">*</sup>
                     </label>
                     <textarea
-                    id="lectureDesc"
-                    placeholder="Enter Lecture Description"
-                    {...register("lectureDesc", { required: true })}
-                    className="bg-richblack-700 text-richblack-50 p-[12px]  rounded-md focus:outline-none resize-x-none min-h-[100px] w-full"
+                        id="lectureDesc"
+                        placeholder="Enter Lecture Description"
+                        {...register("lectureDesc", { required: true })}
+                        className="bg-richblack-700 text-richblack-50 p-[12px]  rounded-md focus:outline-none resize-x-none min-h-[100px] w-full"
+                        readOnly={view}
                     />
                 </div>
                 <div className="flex justify-end">

@@ -34,20 +34,6 @@ function Home(){
         return state.auth
     });
     console.log(signupData);
-    const [categories, setCategories] = useState([]);
-    async function fetchCategories(){
-        try{
-            console.log(CATEGORIES);
-            const result = await apiConnector("GET", CATEGORIES.CATEGORIES_API);
-            console.log(result);
-        } catch(error){
-            console.log(error.message);
-            console.log('couldn\'t fetch categories')
-        }
-    }
-    useEffect(()=>{
-        fetchCategories();
-    }, [])
     const [selectedTag, setSelectedTag] = useState("Free");
     const [courses, setCourses] = useState(HomePageExplore[0].courses);
     return (
