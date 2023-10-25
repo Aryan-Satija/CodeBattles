@@ -20,6 +20,7 @@ import EnrolledCourses from "./pages/EnrolledCourses";
 import Wishlist from "./pages/Wishlist";
 import CreateCourse from "./pages/CreateCourse";
 import { MyCourses } from "./pages/MyCourses";
+import Catalog from "./pages/Catalog";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -31,6 +32,7 @@ function App(){
       <Routes>
         <Route exact path="/" element={<Home/>}/>
         <Route exact path="/about" element={<About/>}/>
+        <Route exact path="/catalog/:catalogname" element={<Catalog/>}/>
         <Route exact path="/contact" element={<Contact/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/signup" element={<SignUp/>}/>

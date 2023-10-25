@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch} from 'react-redux';
 import { IoAddCircleOutline } from "react-icons/io5"
 import { AiFillCaretDown } from "react-icons/ai"
-import { FaPlus, FaSlidersH } from "react-icons/fa"
+import { FaPlus } from "react-icons/fa"
 import { MdEdit } from "react-icons/md"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { RxDropdownMenu } from "react-icons/rx"

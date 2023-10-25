@@ -53,6 +53,7 @@ function SignUp(){
             }
         } catch(error){
             dispatch(setLoading(false));
+            console.log(error);
             toast.error(`${error.response.data.message}`, {
                 position: "top-right",
                 autoClose: 5000,

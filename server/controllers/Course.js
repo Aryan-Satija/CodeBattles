@@ -124,6 +124,35 @@ exports.getAllCourses = async (req, res) => {
 		});
 	}
 };
+exports.publishCourse = async(req, res)=>{
+	try{	
+		const {courseId, category} = req.body;
+		if(!courseId || !category){
+			return res.status(404).json({
+			   success: false, 
+			   message: "Target Course's Id missing"
+		   })
+		}
+		const response = await Course.findByIdAndUpdate(courseId, {
+			status: "Published"
+		}, {new: true});
+		await Category.findOneAndUpdate({name:category}, {
+			$push:{
+				courses:courseId
+			}
+		})
+		return res.status(200).json({
+			success: true,
+			message: "Course Published Successfully"
+		})
+	} catch(err){
+		return res.status(500).json({
+			success: false,
+			error: err.message,
+			message: 'Something went wrong'
+		})
+	}
+}
 exports.getAllInstructorCourses = async(req, res)=>{
 	try{
 		const {instructorId} = req.body;
