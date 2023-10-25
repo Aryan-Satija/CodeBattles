@@ -44,7 +44,7 @@ function Navbar(){
                                         categories.map((category)=>{
                                             return (<div key={category._id} className="text-md text-richblack-700 hover:bg-richblack-900/20 text-center rounded-md">
                                                 {
-                                                    category.name
+                                                    <Link to={`/catalog/${category.name.split(" ").join("-")}`}>{category.name}</Link>
                                                 }
                                             </div>)
                                         })

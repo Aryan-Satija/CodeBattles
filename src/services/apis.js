@@ -1,6 +1,7 @@
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 export const CATEGORIES = {
     CATEGORIES_API : BASE_URL + "/course/showAllCategories",
+    CATEGORY_DETAILS : BASE_URL + "/course/getCategoryPageDetails"
 }
 export const AUTH = {
     LOGIN_API : BASE_URL + "/auth/login",
@@ -11,6 +12,7 @@ export const AUTH = {
 }
 export const COURSE = {
     COURSE_CREATE_API : BASE_URL + "/course/createCourse",
+    COURSE_PUBLISH_API : BASE_URL + "/course/publishCourse",
     COURSE_GET_CATEGORIES: BASE_URL + "/course/showAllCategories",
     COURSE_ADD_SECTION: BASE_URL + "/course/addSection",
     COURSE_UPDATE_SECTION: BASE_URL + "/course/updateSection",
@@ -19,7 +21,8 @@ export const COURSE = {
     COURSE_DELETE_SUBSECTION: BASE_URL + "/course/deleteSubSection",
     COURSE_GET_DETAILS: BASE_URL + "/course/getCourseDetails",
     COURSE_DELETE : BASE_URL + "/course/deleteCourse",
-    INSTRUCTOR_COURSES_GET_DETAILS: BASE_URL + "/course/getInstructorCourses"
+    INSTRUCTOR_COURSES_GET_DETAILS: BASE_URL + "/course/getInstructorCourses",
+    COURSES_GET_AVG_RATING: BASE_URL + "/course/getAverageRating"
 }
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",

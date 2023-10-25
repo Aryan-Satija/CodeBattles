@@ -1,24 +1,16 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-// Method for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
 		const { dateOfBirth = "", about = "", contactNumber } = req.body;
 		const id = req.user.id;
-
-		// Find the profile by id
 		const userDetails = await User.findById(id);
 		const profile = await Profile.findById(userDetails.additionalDetails);
-
-		// Update the profile fields
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
 		profile.contactNumber = contactNumber;
-
-		// Save the updated profile
 		await profile.save();
-
 		return res.json({
 			success: true,
 			message: "Profile updated successfully",
@@ -37,7 +29,6 @@ exports.deleteAccount = async (req, res) => {
 	try {
 		console.log("Printing ID: ", req.body.user._id);
 		const id = req.body.user._id;
-		
 		const user = await User.findById({ _id: id });
 		if (!user) {
 			return res.status(404).json({
@@ -45,9 +36,7 @@ exports.deleteAccount = async (req, res) => {
 				message: "User not found",
 			});
 		}
-		// Delete Assosiated Profile with the User
 		await Profile.findByIdAndDelete({ _id: id });
-		// TODO: Unenroll User From All the Enrolled Courses
 		await User.findByIdAndDelete({ _id: id });
 		res.status(200).json({
 			success: true,
@@ -80,7 +69,6 @@ exports.getAllUserDetails = async (req, res) => {
 		});
 	}
 };
-
 exports.updateDisplayPicture = async(req, res) => {
     try {
 		const displayPicture = req.files.displayPicture;
@@ -110,7 +98,6 @@ exports.updateDisplayPicture = async(req, res) => {
       })
     }
 };
-  
 exports.getEnrolledCourses = async (req, res) => {
     try {
       const userId = req.user.id

@@ -44,8 +44,8 @@ exports.showAllCategories = async (req, res) => {
 };
 exports.categoryPageDetails = async (req, res) => {
     try {
-            const {categoryId} = req.body;
-            const selectedCategory = await Category.findById(categoryId)
+            const {name} = req.body;
+            const selectedCategory = await Category.find({name : name})
                                             .populate("courses")
                                             .exec();
             if(!selectedCategory) {
@@ -55,15 +55,25 @@ exports.categoryPageDetails = async (req, res) => {
                 });
             }
             const differentCategories = await Category.find({
-                                         _id: {$ne: categoryId},
-                                         })
-                                         .populate("courses")
-                                         .exec();
-            return res.status(200).json({
+										  name: {$ne: name},
+                                        })
+                                        .populate("courses")
+                                        .exec();
+			const allCategories = await Category.find()
+			.populate({
+			   path: "courses"
+			})
+			.exec()
+			const allCourses = allCategories.flatMap((category) => category.courses)
+			const mostSellingCourses = allCourses
+		    .sort((a, b) => b.sold - a.sold)
+			.slice(0, 10)
+			return res.status(200).json({
                 success:true,
                 data: {
                     selectedCategory,
                     differentCategories,
+					mostSellingCourses
                 }
             });
     }

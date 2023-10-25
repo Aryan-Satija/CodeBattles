@@ -60,6 +60,7 @@ const CourseDetails = ({setPage}) => {
 	const util = async(data)=>{
         try{
             setLoading(true);
+            console.log("category", data.courseCategory);
             const formData = new FormData();
             formData.append("courseName", data.courseName);
             formData.append("courseDescription", data.courseDescription);
