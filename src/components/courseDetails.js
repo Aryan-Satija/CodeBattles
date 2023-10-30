@@ -108,7 +108,7 @@ const CourseDetails = ({setPage}) => {
         <form onSubmit={handleSubmit(submitHandler)} className='bg-richblack-800 p-[24px] rounded-lg flex flex-col gap-4'>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Course Title
-            <input placeholder='Enter Your Name'  {...register("courseName")} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
+            <input placeholder='Enter Course Name'  {...register("courseName")} className='bg-richblack-700 text-richblack-50 p-[12px] w-full rounded-md focus:outline-none'/>
         </label>
         <label className='text-richblack-200 cursor-pointer flex flex-col gap-2'>
             Course Short Description
