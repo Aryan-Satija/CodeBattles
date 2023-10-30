@@ -5,11 +5,12 @@ import { apiConnector } from '../services/apiConnector';
 import { COURSE } from '../services/apis';
 export const CourseCard = ({course, isSlider}) => {
     const [rating, setRating] = useState(0);
+    console.log(course);
     async function getRating(){
-        const response = await apiConnector("GET", COURSE.COURSES_GET_AVG_RATING, {
+        const response = await apiConnector("POST", COURSE.COURSES_GET_AVG_RATING, 
+        {
             courseId: course._id
         });
-        console.log(course._id, response)
         setRating(response.data.averageRating);
     }
     useEffect(()=>{
