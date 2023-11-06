@@ -1,6 +1,7 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+require("dotenv").config();
 exports.updateProfile = async (req, res) => {
 	try {
 		const { dateOfBirth = "", about = "", contactNumber } = req.body;
@@ -55,6 +56,7 @@ exports.getAllUserDetails = async (req, res) => {
 		const id = req.user.id;
 		const userDetails = await User.findById(id)
 			.populate("additionalDetails")
+			.populate("courses")
 			.exec();
 		console.log(userDetails);
 		res.status(200).json({
@@ -72,21 +74,18 @@ exports.getAllUserDetails = async (req, res) => {
 exports.updateDisplayPicture = async(req, res) => {
     try {
 		const displayPicture = req.files.displayPicture;
-		console.log('display pictures : ', displayPicture);
-      	const userId = req.user.id;
-	  	console.log(userId);
+		const userId = req.user.id;
       	const image = await uploadImageToCloudinary(
-        displayPicture,
-        process.env.FOLDER_NAME,
-        1000,
-        1000)
-      	console.log(image)
+        	displayPicture,
+        	process.env.FOLDER_NAME,
+        	1000,
+        	1000)
       	const updatedProfile = await User.findByIdAndUpdate(
-        	{ _id: userId },
-        	{ image: image.secure_url },
-        	{ new: true }
-      	)
-      	res.send({
+			  { _id: userId },
+			  { image: image.secure_url },
+			  { new: true }
+	    )
+      	res.status(200).json({
         	success: true,
         	message: `Image Updated successfully`,
         	data: updatedProfile,

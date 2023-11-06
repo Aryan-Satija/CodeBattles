@@ -27,5 +27,6 @@ export const COURSE = {
 export const SETTINGS = {
     UPDATE_PROFILE_API : BASE_URL + "/profile/updateDisplayPicture",
     DELETE_ACCOUNT_API : BASE_URL + "/profile/deleteProfile",
-    GET_ENROLLED_COURSES_API : BASE_URL + "/profile/getEnrolledCourses"
+    GET_ENROLLED_COURSES_API : BASE_URL + "/profile/getEnrolledCourses",
+    GET_USER_DETAILS_API : BASE_URL + "/profile/getUserDetails"
 }

@@ -22,6 +22,7 @@ import CreateCourse from "./pages/CreateCourse";
 import { MyCourses } from "./pages/MyCourses";
 import Catalog from "./pages/Catalog";
 import {CourseDetails} from "./pages/CourseDetails";
+import { InstructorDashboard } from "./pages/InstructorDashboard";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -55,6 +56,7 @@ function App(){
               <>
                 <Route exact path="/dashboard/add-course" element={<CreateCourse/>}/>
                 <Route exact path="/dashboard/courses" element={<MyCourses/>}/>
+                <Route exact path="/dashboard/instructor" element={<InstructorDashboard/>}/>
               </>
             )
           }
