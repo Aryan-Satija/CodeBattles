@@ -92,7 +92,7 @@ export const MyCourses = () => {
                             <img src={course.thumbnail} className='h-[140px] w-[220px] rounded-lg object-fill'/>
                             <div className='flex flex-col justify-between max-w-[400px] gap-y-4'>
                                 <p className='text-lg font-semibold text-richblack-200'>{course.courseName}</p>
-                                <p className="text-xs text-richblack-400">{course.courseDescription}</p>
+                                <p className="text-xs text-richblack-400">{course.courseDescription.slice(0, 200)}....</p>
                                 {
                                     course.status === "Draft" ? <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-600/40 px-2 py-[2px] text-[12px] font-medium text-pink-100">Draft</p> : <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-caribbeangreen-600/40 px-2 py-[2px] text-[12px] font-medium text-caribbeangreen-100">Published</p>
                                 }

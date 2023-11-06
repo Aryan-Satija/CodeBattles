@@ -5,11 +5,15 @@ import '../components/Spinner.css';
 import { apiConnector } from '../services/apiConnector';
 import { SETTINGS } from '../services/apis';
 import { useSelector } from 'react-redux';
+import { AiOutlineEye } from "react-icons/ai"
+import { RiDeleteBin6Line } from "react-icons/ri"
 import ProgressBar from "@ramonak/react-progress-bar";
 import {FaGraduationCap} from "react-icons/fa6";
 import { motion, variant } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 const EnrolledCourses = () => {
     const [courses, setCourses] = useState(null);
+    const navigate = useNavigate();
     const {token} = useSelector((state)=>{
         return state.auth;
     })
@@ -41,38 +45,36 @@ const EnrolledCourses = () => {
                 </div>
                 <div className='flex flex-col gap-6 pr-6'>
                 {
-                    courses.map((course,index)=>{
-                        return (<motion.div initial={index%2 === 0 ? {x:-400, opacity:0} : {x:400, opacity:0}} whileInView={{x:0, y:0, opacity:1, transition:{duration:0.4}}} className='bg-richblack-800 py-2 px-2 w-full rounded-md flex flex-col xl:flex-row gap-6 items-start'>
-                                    <div className='cursor-pointer'>
-                                        <img src={course.thumbnail} className='md:w-[400px] aspect-video object-fill rounded-md cursor-pointer relative'></img>
-                                    </div>
-                                    <div className='sm:flex flex-col gap-3 hidden'>
-                                        <div className='text-richblack-100 text-xl font-bold'>{course.courseName}</div>
-                                        <div className='text-richblack-200 text-md'>{course.courseDescription}</div>
-                                        <div className='flex items-center gap-4'>
-                                            {
-                                                course.tag.map((tag)=>{
-                                                    return (<div className='p-2  flex items-center justify-center rounded-full h-[2rem] bg-yellow-800 text-yellow-200 border-2 border-yellow-200'>{tag}</div>)
-                                                })
-                                            }
-                                        </div>
-                                        <div className='text-richblack-400 text-md font-bold'>{course.studentsEnrolled.length} students enrolled</div>
-                                        <div>
-                                            <span className='text-caribbeangreen-200 text-md font-bold'>₹ {course.price}</span>
-                                        </div>
-                                        <div className='w-full'>
-                                            <ProgressBar completed={75}
-                                            padding={"2px"}
-                                            height={"15px"}
-                                            borderRadius={"10px"}
-                                            bgColor={"rgba(10, 120, 90)"}
-                                            />
-                                        </div>
-                                    </div>
-                                </motion.div>)
+                    courses.map((course)=>{
+                        return (<div key={course._id} className="flex flex-col gap-4 md:flex-row justify-between border-b border-richblack-800 px-6 py-8">
+                            <div className='flex flex-col lg:flex-row flex-1 gap-x-4' col={2}>
+                                <img src={course.thumbnail} className='h-[140px] w-[220px] rounded-lg object-fill'/>
+                                <div className='flex flex-col justify-between max-w-[400px] gap-y-4'>
+                                    <p className='text-lg font-semibold text-richblack-200'>{course.courseName}</p>
+                                    <p className="text-xs text-richblack-400">{course.courseDescription.slice(0, 200)}....</p>
+                                    {
+                                        <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-caribbeangreen-600/40 px-2 py-[2px] text-[12px] font-medium text-caribbeangreen-100">Enrolled</p>
+                                    }
+                                </div>
+                            </div>
+                            <div className='flex items-center gap-x-10'>
+                                <div className="text-sm flex-1 font-medium text-richblack-200">
+                                    100+ hours
+                                </div>
+                                <div className="text-sm flex-1 font-medium text-richblack-200">
+                                    ₹{course.price}
+                                </div>
+                                <div className="text-sm flex-1 flex justify-start gap-x-2 font-medium text-richblack-200">
+                                    <button className='cursor-pointer duration-200 hover:text-caribbeangreen-400 hover:scale-105' onClick={()=>{
+                                        navigate(`/view-course/${course._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`)
+                                    }}><AiOutlineEye size={20} /></button>
+                                    <button className='cursor-pointer duration-200 hover:text-pink-400 hover:scale-105' onClick={()=>{}}><RiDeleteBin6Line size={20} /></button>
+                                </div>
+                            </div>
+                        </div>)  
                     })
                 }
-                </div>
+            </div>
             </>)
         }
     </div>
