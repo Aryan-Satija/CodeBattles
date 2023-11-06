@@ -29,7 +29,6 @@ export const SubsectionModal = ({activeSection, activeSubSection, closeModal, re
             return true;
         } catch(error){
             return false;
-            console.log("error while adding subsection", error);
         }
     }
     const submitHandler = async(data)=>{

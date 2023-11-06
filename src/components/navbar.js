@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { CATEGORIES } from "../services/apis";
 import { useState, useEffect } from "react";
 import { apiConnector } from "../services/apiConnector";
+import {BsCartCheck} from 'react-icons/bs';
+import { useSelector } from "react-redux";
 function Navbar(){
+    const {user} = useSelector(state=>state.profile);
     const location = useLocation();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
@@ -61,10 +64,23 @@ function Navbar(){
                     }
                 </ul>
             </nav>
-            <div className="hidden lg:flex items-center gap-10">
-                <button className={`text-richblack-100 ${util('/signup') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/signup")}}>SIGN UP</button>
-                <button className={`text-richblack-100 ${util('/login') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/login")}}>LOG IN</button>
-            </div>
+            {
+                !user &&  
+                    <div className="hidden lg:flex items-center gap-10">
+                        <button className={`text-richblack-100 ${util('/signup') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/signup")}}>SIGN UP</button>
+                        <button className={`text-richblack-100 ${util('/login') ? 'text-yellow-200': ''}`} onClick={()=>{navigate("/login")}}>LOG IN</button>
+                    </div>
+            }
+            {
+                user && <div className="hidden lg:flex items-center gap-4">
+                    <button onClick={()=>{navigate("/dashboard/profile")}}>
+                        <img  className={`rounded-full w-[40px] aspect-square`} src={user.image}/>
+                    </button>
+                    <button className={`text-2xl text-richblack-200`} >
+                        <BsCartCheck/>
+                    </button>
+                </div>
+            }
         </div>
     </div>)
 }

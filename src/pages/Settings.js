@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import {useSelector} from 'react-redux'
+import React, { useEffect, useState, useRef } from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import {BiSave} from 'react-icons/bi';
 import {apiConnector} from '../services/apiConnector.js';
 import {SETTINGS} from '../services/apis.js';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { setUser } from '../slices/profileSlice.js';
 const Settings = () => {
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const updateViewportWidth = () => {
       setViewportWidth(window.innerWidth);
@@ -14,30 +17,39 @@ const Settings = () => {
   const {user} = useSelector((state)=>{
     return state.profile;
   });
+  const handleClick = () => {
+    fileInputRef.current.click()
+  }
   const {token} = useSelector((state)=>{
     return state.auth;
   });
-  const [preview, setPreview] = useState(user.image)
-  useEffect(() => {
-      window.addEventListener('resize', updateViewportWidth);
-      return () => {
-        window.removeEventListener('resize', updateViewportWidth);
-      };
-  }, []);
+  const [preview, setPreview] = useState(user.image);
+  const [image, setImage] = useState(user.image);
   const updateProfile = async()=>{
     try{
         const formData = new FormData();
-        formData.append("displayPicture", preview);
-        const response = await apiConnector("PUT", 
+        formData.append("displayPicture", image);
+        console.log("formdata", formData);
+        const response = await apiConnector("POST", 
                       SETTINGS.UPDATE_PROFILE_API, 
                       formData,
                       {
                         "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${token}`,
                       });
-        console.log(response);   
-        
-    } catch(error){
+        dispatch(setUser(response.data.data));
+        localStorage.setItem("user", JSON.stringify(response.data.data));
+        toast.success('Changes Updated Successfully', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        }); 
+      }catch(error){
       console.log(error);
       toast.error('Changes Couldn\'t Be Updated', {
         position: "top-right",
@@ -102,16 +114,20 @@ const Settings = () => {
                 <div className='flex gap-4 items-center'>
                   <div onClick={updateProfile} className={`cursor-pointer flex items-center gap-2 rounded-[8px] px-[24px] py-[8px] text-center bg-yellow-50 text-richblack-900 duration-200 hover:scale-95`}>CONFIRM</div>
                   <div className={`cursor-pointer flex items-center gap-2 rounded-[8px] px-[24px] py-[8px] text-center bg-richblack-700 text-richblack-5 duration-200 hover:scale-95`}>  
-                    <label htmlFor='fileupload'>PREVIEW</label>
+                    <label htmlFor='fileupload' onClick={handleClick}>PREVIEW</label>
                     <input 
                       id="fileupload"
                       type='file'
+                      ref={fileInputRef}
                       onChange={(event)=>{
+                        console.log(event);
                         const file = event.target.files[0];
+                        setPreview(file);
+                        setImage(file);
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
-                        reader.onloadend = (e) => {
-                          setPreview(e.target.result);
+                        reader.onloadend = () => {
+                          setPreview(reader.result);
                         };
                       }}
                       className='hidden'
@@ -122,7 +138,10 @@ const Settings = () => {
             </div>
         </div>
         <div className='w-full p-[1.5rem] bg-richblack-800 rounded-md'>
-            <div className='text-xl text-richblack-100 font-thin'>About</div>
+            <div className='flex w-full justify-between items-center mb-4'>
+              <div className='text-xl text-richblack-100 font-thin'>About</div>
+              <div className={`cursor-pointer flex items-center gap-2 rounded-[8px] px-[24px] py-[12px] text-center bg-yellow-50 text-richblack duration-200 hover:scale-95`}><BiSave/> SAVE</div>
+            </div>
             <div>
                 <textarea rows={5} placeholder={user.additionalDetails.about ? user.additionalDetails.about : "WRITE SOMETHING ABOUT YOURSELF...."} className='w-full bg-richblack-50/10 p-4 text-richblack-25 focus:outline-none'/>
             </div>

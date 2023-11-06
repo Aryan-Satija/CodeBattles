@@ -16,15 +16,12 @@ exports.auth = async (req, res, next) => {
                 message:'Token is missing',
             });
         }
-
-        //verify the token
         try{
             const decode = jwt.verify(token, process.env.JWT_SECRET);
             console.log(decode);
             req.user = decode;
         }
         catch(err) {
-            //verification - issue
             return res.status(401).json({
                 success:false,
                 token: token,
@@ -43,8 +40,6 @@ exports.auth = async (req, res, next) => {
         });
     }
 }
-
-//isStudent
 exports.isStudent = async (req, res, next) => {
  try{
         if(req.user.accountType !== "Student") {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { useParams } from 'react-router-dom';
 import { apiConnector } from '../services/apiConnector';
 import { CATEGORIES } from '../services/apis';
@@ -46,19 +46,21 @@ const Catalog = () => {
   return (
     <>
         <div className='bg-richblack-800 px-4'>
-            <div className="mx-4 flex flex-col items-start gap-4 min-h-[260px] max-w-maxContentTab">
-                <p className='text-md pt-20 text-richblack-200'>
-                    home/catalog/
-                    <span className='text-yellow-25'>
-                        {selectedCategory && selectedCategory.name}
-                    </span>
-                </p>
-                <p className='text-4xl text-richblack-5'>{selectedCategory && selectedCategory.name}</p>
-                <p className='text-md text-richblack-100'>
-                {
-                    selectedCategory && selectedCategory.description
-                }
-                </p>
+            <div className='flex w-full mt-12 '>
+                <div className="mx-4 flex flex-col items-start gap-4 min-h-[260px] max-w-maxContentTab">
+                    <p className='text-md pt-20 text-richblack-200'>
+                        home/catalog/
+                        <span className='text-yellow-25'>
+                            {selectedCategory && selectedCategory.name}
+                        </span>
+                    </p>
+                    <p className='text-4xl text-richblack-5'>{selectedCategory && selectedCategory.name}</p>
+                    <p className='text-md text-richblack-100'>
+                    {
+                        selectedCategory && selectedCategory.description
+                    }
+                    </p>
+                </div>
             </div>
             <div className='box-content w-full px-4 py-12 '>
                 <div className='text-4xl text-richblack-5'>Courses to get you started</div>
@@ -105,7 +107,9 @@ const Catalog = () => {
                 {
                     mostSelling && 
                     mostSelling.slice(0, 4).map((course, index)=>{
-                        return (<CourseCard course={course} key={index}/>)
+                        return (<div> 
+                                    <CourseCard course={course} key={index}/>
+                                </div>)
                     })
                 }
             </div>
