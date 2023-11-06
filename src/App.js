@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import Error from "./pages/Error";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import { UseSelector, useSelector } from "react-redux";
+import { ViewCourse } from "./pages/ViewCourse.js";
 import EnrolledCourses from "./pages/EnrolledCourses";
 import Wishlist from "./pages/Wishlist";
 import CreateCourse from "./pages/CreateCourse";
@@ -23,6 +24,7 @@ import { MyCourses } from "./pages/MyCourses";
 import Catalog from "./pages/Catalog";
 import {CourseDetails} from "./pages/CourseDetails";
 import { InstructorDashboard } from "./pages/InstructorDashboard";
+import PrivateRoutes from "./components/PrivateRoute.js";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -41,6 +43,7 @@ function App(){
         <Route exact path="/signup" element={<SignUp/>}/>
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
+        <Route exact path="/view-course:courseId" element={<PrivateRoutes><ViewCourse/></PrivateRoutes>}/>
           <Route exact path="/dashboard/profile" element={<Profile/>}/>
           <Route exact path="/dashboard/settings" element={<Settings/>}/>
           {
