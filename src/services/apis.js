@@ -20,6 +20,7 @@ export const COURSE = {
     COURSE_ADD_SUBSECTION: BASE_URL + "/course/addSubSection",
     COURSE_DELETE_SUBSECTION: BASE_URL + "/course/deleteSubSection",
     COURSE_GET_DETAILS: BASE_URL + "/course/getCourseDetails",
+    COURSE_GET_FULL_DETAILS: BASE_URL + "/course/getFullCourseDetails",
     COURSE_DELETE : BASE_URL + "/course/deleteCourse",
     INSTRUCTOR_COURSES_GET_DETAILS: BASE_URL + "/course/getInstructorCourses",
     COURSES_GET_AVG_RATING: BASE_URL + "/course/getAverageRating"
