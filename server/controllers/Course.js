@@ -2,6 +2,7 @@ const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const CourseProgress = require("../models/CourseProgress");
 exports.createCourse = async (req, res) => {
 	try {
 		const userId = req.user.id;
@@ -187,37 +188,36 @@ exports.getAllInstructorCourses = async(req, res)=>{
 }
 exports.getCourseDetails = async(req, res) => {
     try {
-            const {courseId} = req.body;
-            const courseDetails = await Course.find(
-                                        {_id:courseId})
-                                        .populate(
-                                            {
-                                                path:"instructor",
-                                                populate:{
-                                                    path:"additionalDetails",
-                                                },
-                                            }
-                                        )
-                                        .populate("category")
-                                        .populate({
-                                            path:"courseContent",
+        const {courseId} = req.body;
+        const courseDetails = await Course.find(
+                                    {_id:courseId})
+                                    .populate(
+                                        {
+                                            path:"instructor",
                                             populate:{
-                                                path:"subSection",
+                                                path:"additionalDetails",
                                             },
-                                        })
-                                        .exec();
-                if(!courseDetails) {
-                    return res.status(400).json({
-                        success:false,
-                        message:`Could not find the course with ${courseId}`,
-                    });
-                }
-                return res.status(200).json({
-                    success:true,
-                    message:"Course Details fetched successfully",
-                    updatedCourse:courseDetails,
-                })
-
+                                        }
+                                    )
+                                    .populate("category")
+                                    .populate({
+                                        path:"courseContent",
+                                        populate:{
+                                            path:"subSection",
+                                        },
+                                    })
+                                    .exec();
+        if(!courseDetails) {
+            return res.status(400).json({
+                success:false,
+                message:`Could not find the course with ${courseId}`,
+            });
+        }
+        return res.status(200).json({
+            success:true,
+            message:"Course Details fetched successfully",
+            updatedCourse:courseDetails,
+        })
     }
     catch(error) {
         console.log(error);
@@ -246,6 +246,56 @@ exports.deleteCourse = async(req, res)=>{
 			success: false,
 			message: "Something Went Wrong",
 			error: err.message
+		})
+	}
+}
+exports.getFullCourseDetails = async()=>{
+	try{
+		const {courseId} = req.body;
+		const {userId} = req.user.id;
+		if(!userId || !courseId){
+			return res.status(404).json({
+				success: false,
+				message: "All fields are required"
+			})
+		} 
+		const courseDetails = await Course.findOne({ _id: courseId})
+			.populate({
+			  path: "instructor",
+			  populate: {
+				path: "additionalDetails",
+			  },
+			})
+			.populate("category")
+			.populate("ratingAndReviews")
+			.populate({
+			  path: "courseContent",
+			  populate: {
+				path: "subSection",
+			  },
+			})
+			.exec()
+		let courseProgressCount = await CourseProgress.findOne({
+			courseId: courseId, 
+			userId: userId
+		});
+		if(!courseProgressCount){
+			return res.status(200).json({
+				success: true,
+				courseDetails,
+				completedVideos: []
+			})
+		}
+		return res.status(200).json({
+			success: true,
+			courseDetails,
+			completedVideos: courseDetails.completedVideos
+		})
+	} catch(err){
+		return res.status(500).json({
+			success: false,
+			error: err.message,
+			message: "Something went wrong"
 		})
 	}
 }

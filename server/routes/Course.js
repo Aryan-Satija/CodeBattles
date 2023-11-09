@@ -6,6 +6,7 @@ const {
   publishCourse,
   getAllInstructorCourses,
   getCourseDetails,
+  getFullCourseDetails,
   deleteCourse
 } = require("../controllers/Course");
 const {
@@ -44,6 +45,7 @@ router.post("/getCourseDetails", getCourseDetails)
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategories)
 router.post("/getCategoryPageDetails", categoryPageDetails)
+router.post("/getFullCourseDetails", auth, isStudent, getFullCourseDetails)
 router.post("/createRating", auth, isStudent, createRating)
 router.post("/getAverageRating", getAverageRating)
 router.get("/getReviews", getAllRating)

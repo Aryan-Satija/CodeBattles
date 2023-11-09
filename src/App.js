@@ -43,7 +43,7 @@ function App(){
         <Route exact path="/signup" element={<SignUp/>}/>
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
-        <Route exact path="/view-course:courseId" element={<PrivateRoutes><ViewCourse/></PrivateRoutes>}/>
+        <Route exact path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element={<PrivateRoutes><ViewCourse/></PrivateRoutes>}/>
           <Route exact path="/dashboard/profile" element={<Profile/>}/>
           <Route exact path="/dashboard/settings" element={<Settings/>}/>
           {

@@ -1,8 +1,8 @@
-import React, {useParams, useState, useEffect} from 'react'
+import React, { useState, useEffect} from 'react'
 import VideoDetailsSidebar from './VideoDetailsSidebar';
 import CourseReviewModal from './CourseReviewModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import {
   setCompletedLectures,
   setCourseSectionData,
@@ -20,7 +20,7 @@ export const ViewCourse = () => {
     ;(async () => {
       const courseData = await apiConnector(
         "POST",
-        COURSE.COURSE_GET_DETAILS,
+        COURSE.COURSE_GET_FULL_DETAILS,
         {
           courseId
         },
@@ -28,6 +28,7 @@ export const ViewCourse = () => {
           Authorization: `Bearer ${token}`,
         }
       )
+      console.log("$$$$$$", courseData);
       dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
       dispatch(setEntireCourseData(courseData.courseDetails));
       dispatch(setCompletedLectures(courseData.completedVideos));
@@ -48,7 +49,7 @@ export const ViewCourse = () => {
             </div>
           </div>
       </div>
-      {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}
+      {reviewModal && <CourseReviewModal setReviewModal={setReviewModal}/>}
     </>
   )
 }
