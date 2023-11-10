@@ -15,10 +15,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     totalNoOfLectures,
     completedLectures,
   } = useSelector((state) => state.viewCourse)
-  console.log("courseSectionData", courseSectionData);
-  console.log("courseEntireData", courseEntireData);
-  console.log("totalNoOfLectures", totalNoOfLectures);
-  console.log("completedLectures", completedLectures);
+
   useEffect(() => {
     (() => {
       if (!courseSectionData.length) return
@@ -37,8 +34,8 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
-        <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
+      <div className="flex min-h-screen  w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
+        <div className="mx-5 mt-16 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
           <div className="flex w-full items-center justify-between ">
             <div
               onClick={() => {
@@ -49,7 +46,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
             >
               <IoIosArrowBack size={30} />
             </div>
-            <div className='cursor-pointer rounded-[8px] px-[24px] py-[12px] text-cente bg-yellow-50 text-richblack-900'>Add Review</div>
+            <div className='cursor-pointer rounded-sm px-[24px] py-[12px] text-cente bg-yellow-50 text-richblack-900' onClick={()=>{setReviewModal(true)}}>Add Review</div>
           </div>
           <div className="flex flex-col">
             <p>{courseEntireData?.courseName}</p>

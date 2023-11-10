@@ -13,38 +13,42 @@ import { COURSE } from '../services/apis';
 import { apiConnector } from '../services/apiConnector';
 export const ViewCourse = () => {
   const {courseId} = useParams();
+  console.log("courseId", courseId);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [reviewModal, setReviewModal] = useState(false);
   useEffect(() => {
     ;(async () => {
-      const courseData = await apiConnector(
-        "POST",
-        COURSE.COURSE_GET_FULL_DETAILS,
-        {
-          courseId
-        },
-        {
-          Authorization: `Bearer ${token}`,
-        }
-      )
-      console.log("$$$$$$", courseData);
-      dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
-      dispatch(setEntireCourseData(courseData.courseDetails));
-      dispatch(setCompletedLectures(courseData.completedVideos));
-      let lectures = 0
-      courseData?.courseDetails?.courseContent?.forEach((section) => {
-        lectures += section.subSection.length
-      })
-      dispatch(setTotalNoOfLectures(lectures));
+      try{
+        const courseData = await apiConnector(
+          "POST",
+          COURSE.COURSE_GET_FULL_DETAILS,
+          {
+            courseId
+          },
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        )
+        dispatch(setCourseSectionData(courseData.data.courseDetails.courseContent));
+        dispatch(setEntireCourseData(courseData.data.courseDetails));
+        dispatch(setCompletedLectures(courseData.data.completedVideos));
+        let lectures = 0
+        courseData?.data.courseDetails?.courseContent?.forEach((section) => {
+          lectures += section.subSection.length
+        })
+        dispatch(setTotalNoOfLectures(lectures));
+      } catch(err){
+        console.log(err);
+      }
     })()
   }, [])
   return (
     <>
-      <div className='relative flex min-h-[calc(100vh-3.5rem)]'>
+      <div className='relative flex min-h-[100vh]'>
           <VideoDetailsSidebar setReviewModal={setReviewModal} />
-          <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
-            <div className="mx-6">
+          <div className="h-[100vh] flex-1 overflow-auto">
+            <div >
               <Outlet/>
             </div>
           </div>
