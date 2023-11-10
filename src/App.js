@@ -15,7 +15,7 @@ import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import Error from "./pages/Error";
 import { ACCOUNT_TYPE } from "./utils/constants";
-import { UseSelector, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ViewCourse } from "./pages/ViewCourse.js";
 import EnrolledCourses from "./pages/EnrolledCourses";
 import Wishlist from "./pages/Wishlist";
@@ -25,11 +25,11 @@ import Catalog from "./pages/Catalog";
 import {CourseDetails} from "./pages/CourseDetails";
 import { InstructorDashboard } from "./pages/InstructorDashboard";
 import PrivateRoutes from "./components/PrivateRoute.js";
+import { VideoPlayer } from "./pages/VideoPlayer.js";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
   });
-  console.log("user", user);
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter overflow-x-hidden">
       <Navbar/>
@@ -41,9 +41,11 @@ function App(){
         <Route exact path="/contact" element={<Contact/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/signup" element={<SignUp/>}/>
+        <Route element={<PrivateRoutes><ViewCourse/></PrivateRoutes>}>
+            <Route exact path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element={<VideoPlayer/>}/>
+        </Route>
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
-        <Route exact path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element={<PrivateRoutes><ViewCourse/></PrivateRoutes>}/>
           <Route exact path="/dashboard/profile" element={<Profile/>}/>
           <Route exact path="/dashboard/settings" element={<Settings/>}/>
           {
