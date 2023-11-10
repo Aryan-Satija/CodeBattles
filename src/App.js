@@ -26,6 +26,7 @@ import {CourseDetails} from "./pages/CourseDetails";
 import { InstructorDashboard } from "./pages/InstructorDashboard";
 import PrivateRoutes from "./components/PrivateRoute.js";
 import { VideoPlayer } from "./pages/VideoPlayer.js";
+import { CodeEditor } from "./pages/CodeEditor.js";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -52,6 +53,7 @@ function App(){
             user && user.accountType === ACCOUNT_TYPE.STUDENT && (
               <>
                 <Route exact path="/dashboard/enrolled-courses" element={<EnrolledCourses/>}/>
+                <Route exact path="/dashboard/editor" element={<CodeEditor/>}/>
                 <Route exact path="/dashboard/wishlist" element={<Wishlist/>}/>
               </>
             )
