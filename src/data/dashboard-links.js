@@ -47,5 +47,12 @@ export const sidebarLinks = [
     path: "/dashboard/wishlist",
     type: ACCOUNT_TYPE.STUDENT,
     icon: "VscStarEmpty"
+  },
+  {
+    id: 8,
+    name: "Code Editor",
+    path: "/dashboard/editor",
+    type: ACCOUNT_TYPE.STUDENT,
+    icon: "VscCode"
   }
 ];
