@@ -31,3 +31,6 @@ export const SETTINGS = {
     GET_ENROLLED_COURSES_API : BASE_URL + "/profile/getEnrolledCourses",
     GET_USER_DETAILS_API : BASE_URL + "/profile/getUserDetails"
 }
+export const Editor = {
+    RUN_PROGRAM_API : BASE_URL + '/Editor/run'
+}

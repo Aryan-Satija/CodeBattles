@@ -1,5 +1,6 @@
 const {generateFile} = require("../generateFile.js");
-const {executeCpp} = require("../executeCpp.js") 
+const {executeCpp} = require("../executeCpp.js");
+const {executePy} = require('../executePy.js'); 
 exports.runProgram = async(req, res)=>{
     try{
         const {language="cpp", code} = req.body;
@@ -10,7 +11,12 @@ exports.runProgram = async(req, res)=>{
             })
         }
         const filepath = await generateFile(code, language);
-        const output = await executeCpp(filepath);
+        let output;
+        if(language === "cpp")
+            output = await executeCpp(filepath);
+        else
+            output = await executePy(filepath);
+        
         return res.status(200).json({
             success: true, 
             output
