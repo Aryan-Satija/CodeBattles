@@ -27,6 +27,7 @@ import { InstructorDashboard } from "./pages/InstructorDashboard";
 import PrivateRoutes from "./components/PrivateRoute.js";
 import { VideoPlayer } from "./pages/VideoPlayer.js";
 import { CodeEditor } from "./pages/CodeEditor.js";
+import { Question } from "./pages/Question.js";
 function App(){
   const {user} = useSelector((state)=>{
     return state.profile;
@@ -46,6 +47,7 @@ function App(){
             <Route exact path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element={<VideoPlayer/>}/>
         </Route>
         <Route exact path="/signup/verify-email" element={<VerifyEmail/>}/>
+        <Route exact path="/question" element={<Question/>}/>
         <Route exact element={<PrivateRoute><Dashboard/></PrivateRoute>}>
           <Route exact path="/dashboard/profile" element={<Profile/>}/>
           <Route exact path="/dashboard/settings" element={<Settings/>}/>

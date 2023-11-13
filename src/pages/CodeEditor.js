@@ -11,6 +11,7 @@ export const CodeEditor = () => {
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
     const [language, setLanguage] = useState("cpp");
+    console.log(language);
     const {token} = useSelector((state) => {return state.auth});
     const [loading, setLoading] = useState(false);
     const runUtil = async()=>{
@@ -29,6 +30,7 @@ export const CodeEditor = () => {
             return true;
         } catch(error){
             console.log(error);
+            setOutput("");
             setLoading(false);
             return false;
         }
@@ -71,6 +73,7 @@ export const CodeEditor = () => {
                         <select onChange={(event)=>{setLanguage(event.target.value)}} className='bg-richblack-600 py-[8px] outline-none text-richblack-200 cursor-pointer'>
                             <option value={'cpp'}>C++</option>
                             <option value={'py'}>PYTHON</option>
+                            <option value={'java'}>JAVA</option>
                         </select>
                     </div>
                 </div>
