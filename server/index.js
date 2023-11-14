@@ -5,6 +5,7 @@ const profileRoutes = require("./routes/Profile");
 const paymentRoutes = require("./routes/Payments");
 const courseRoutes = require("./routes/Course");
 const editorRoutes = require("./routes/Editor");
+const problemRoutes = require('./routes/Problem');
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -34,7 +35,8 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
-app.use("/api/v1/Editor", editorRoutes )
+app.use("/api/v1/Editor", editorRoutes)
+app.use("/api/v1/problem", problemRoutes);
 app.get("/", (req, res) => {
 	return res.json({
 		success:true,
