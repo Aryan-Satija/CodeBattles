@@ -54,5 +54,12 @@ export const sidebarLinks = [
     path: "/dashboard/editor",
     type: ACCOUNT_TYPE.STUDENT,
     icon: "VscCode"
+  },
+  {
+    id: 9,
+    name: "Problem List",
+    path: "/dashboard/list",
+    type: ACCOUNT_TYPE.STUDENT,
+    icon: "VscRocket"
   }
 ];

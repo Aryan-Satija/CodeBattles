@@ -34,3 +34,7 @@ export const SETTINGS = {
 export const Editor = {
     RUN_PROGRAM_API : BASE_URL + '/Editor/run'
 }
+export const Problems = {
+    VIEW_PROBLEMS : BASE_URL + '/problem/view',
+    SOLVE_PROBLEM : BASE_URL + '/problem/solve'
+}

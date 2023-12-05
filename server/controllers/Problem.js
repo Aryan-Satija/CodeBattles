@@ -22,3 +22,36 @@ exports.createProblem = async(req, res)=>{
         })
     }
 }
+exports.viewProblems = async(req, res)=>{
+    try{
+        const problems = await Problem.find({});
+        return res.status(200).json({
+            success: true,
+            problems,
+            message: "TASK SUCCESSFULL"
+        })
+    } catch(err){
+        return res.status(500).json({
+            success: false,
+            message: "INTERNAL SERVER ERROR",
+            error: err.message
+        })
+    }
+}
+exports.solveProblem = async(req, res)=>{
+    try{
+        const {id} = req.body;
+        const problem = await Problem.findById(id);
+        return res.status(200).json({
+            success: true,
+            data: problem
+        })
+    } catch(error){
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            error
+        })
+    }
+}
