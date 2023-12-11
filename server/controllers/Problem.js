@@ -1,4 +1,5 @@
 const Problem = require("../models/Problem.js");
+const User = require("../models/User.js");
 exports.createProblem = async(req, res)=>{
     try{
         const {name, description, difficulty, examples, initCode, driverRunCode} = req.body;
@@ -45,6 +46,28 @@ exports.solveProblem = async(req, res)=>{
         return res.status(200).json({
             success: true,
             data: problem
+        })
+    } catch(error){
+        console.log(error.message);
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            error
+        })
+    }
+}
+exports.bookmarkProblem = async(req, res)=>{
+    try{
+        const {id} = req.body;
+        const userId = req.user.id;
+        User.findByIdAndUpdate(userId, {
+            $push:{
+                bookmarkedProblems:id
+            }
+        })
+        return res.status(200).json({
+            success: true,
+            message: "Problem Bookmarked"
         })
     } catch(error){
         console.log(error.message);

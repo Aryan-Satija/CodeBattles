@@ -13,6 +13,14 @@ const ProblemSchema = new Schema({
         type: String,
         enum: ["Easy", "Medium", "Hard"]
     },
+    likes:{
+        type: Number,
+        default: 0
+    },
+    dislikes:{
+        type: Number,
+        default: 0
+    },
     examples:{
         type: [String],
     },
