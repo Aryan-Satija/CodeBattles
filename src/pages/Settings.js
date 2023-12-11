@@ -29,7 +29,6 @@ const Settings = () => {
     try{
         const formData = new FormData();
         formData.append("displayPicture", image);
-        console.log("formdata", formData);
         const response = await apiConnector("POST", 
                       SETTINGS.UPDATE_PROFILE_API, 
                       formData,

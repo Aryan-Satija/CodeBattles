@@ -30,7 +30,7 @@ const QuestionList = () => {
                     </div>
                     <div className = {
                                         problem.difficulty === "Easy" ? "text-caribbeangreen-400 bg-caribbeangreen-25/20 px-2 flex justify-center items-center rounded-full" : 
-                                        (problem.difficulty === "Medium" ? "text-yellow-400 bg-yellow-25/20 px-2 flex justify-center items-center rounded-full" : "text-pink-800 bg-pink-400/20 px-2 flex justify-center items-center rounded-full")
+                                        (problem.difficulty === "Medium" ? "text-yellow-400 bg-yellow-25/20 px-2 flex justify-center items-center rounded-full" : "text-pink-600 bg-pink-400/20 px-2 flex justify-center items-center rounded-full")
                                     }>{problem.difficulty}</div>
                 </div>)
             })

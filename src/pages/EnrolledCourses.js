@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css'
 import '../components/Spinner.css';
 import { apiConnector } from '../services/apiConnector';
@@ -7,7 +6,6 @@ import { SETTINGS } from '../services/apis';
 import { useSelector } from 'react-redux';
 import { AiOutlineEye } from "react-icons/ai"
 import { RiDeleteBin6Line } from "react-icons/ri"
-import ProgressBar from "@ramonak/react-progress-bar";
 import {FaGraduationCap} from "react-icons/fa6";
 import { motion, variant } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -17,24 +15,24 @@ const EnrolledCourses = () => {
     const {token} = useSelector((state)=>{
         return state.auth;
     })
-    console.log(courses);
     async function fetchData(){
         try{
-            const response = await apiConnector("GET", 
+            const response = await apiConnector(    "GET", 
                                                     SETTINGS.GET_ENROLLED_COURSES_API, 
                                                     null,
                                                     {
                                                         authorization: `Bearer ${token}`
-                                                    });
+                                                    }
+                                                );
             setCourses(response.data.data);
         } catch(error){
             console.log("error occured");
-            console.log(error.message);
+            console.log(error);
         }
     }
     useEffect(()=>{
         fetchData();
-    }, []);
+    }, [token]);
   return (
     <div className='w-full min-h-screen'>
         {
