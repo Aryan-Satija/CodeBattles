@@ -16,7 +16,6 @@ function SignUp(){
     const [formData, setFormData] = useState({fname:"",lname: "",contact:"",email:"",password:"", confirmpassword:"",role:"Student"});
     const dispatch = useDispatch();
     const navigate = useNavigate(); 
-    console.log(formData);
     async function submitHandler(event){
         event.preventDefault();
         try{
