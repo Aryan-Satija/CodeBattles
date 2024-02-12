@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
 			contactNumber,
 			otp,
 		} = req.body;
+		console.log(firstName, lastName);
 		if (
 			!firstName ||
 			!lastName ||
@@ -33,6 +34,7 @@ exports.signup = async (req, res) => {
 				message: "all fields are required",
 			});
 		}
+
 		if (password !== confirmPassword) {
 			return res.status(400).json({
 				success: false,
@@ -48,6 +50,7 @@ exports.signup = async (req, res) => {
 				message: "User already exists.",
 			});
 		}
+
 		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 		console.log(response);
 		if (response.length === 0) {
@@ -81,7 +84,6 @@ exports.signup = async (req, res) => {
 			additionalDetails: profileDetails._id,
 			image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
 		});
-		console.log(5);
 		return res.status(200).json({
 			success: true,
 			user,
