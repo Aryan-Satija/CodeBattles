@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
 			contactNumber,
 			otp,
 		} = req.body;
-		console.log(firstName, lastName);
+
 		if (
 			!firstName ||
 			!lastName ||
@@ -52,7 +52,7 @@ exports.signup = async (req, res) => {
 		}
 
 		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-		console.log(response);
+
 		if (response.length === 0) {
 			return res.status(400).json({
 				success: false,
@@ -172,8 +172,9 @@ exports.sendotp = async (req, res) => {
 			result = await OTP.findOne({ otp: otp })
 		}
 		const otpPayload = { email, otp };
-		const otpBody = await OTP.create(otpPayload);
-		console.log("OTP Body", otpBody);
+		
+		await OTP.create(otpPayload);
+		
 		res.status(200).json({
 			success: true,
 			message: `OTP Sent Successfully`,

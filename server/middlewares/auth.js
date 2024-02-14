@@ -1,10 +1,14 @@
 const jwt = require("jsonwebtoken");
+const util = require('util');
+const promisify = util.promisify;
+
 require("dotenv").config();
 exports.auth = async (req, res, next) => {
     try{
         const token = req.cookies.token 
                         || req.body.token 
                         || req.header("Authorization")?.replace("Bearer ", "");
+
         if(!token) {
             return res.status(401).json({
                 success:false,
@@ -17,6 +21,7 @@ exports.auth = async (req, res, next) => {
             req.user = decode;
         }
         catch(err) {
+            console.log(err);
             return res.status(401).json({
                 success:false,
                 token: token,

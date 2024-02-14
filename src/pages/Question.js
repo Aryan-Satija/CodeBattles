@@ -39,6 +39,7 @@ export const Question = () => {
     useEffect(()=>{
         const solveQuestion = async()=>{
             try{
+                console.log(token);
                 const response = await apiConnector("POST", Problems.SOLVE_PROBLEM, 
                                 {
                                     id
@@ -46,6 +47,7 @@ export const Question = () => {
                                 {
                                     Authorization : `Bearer ${token}`
                                 }) 
+                
                 setProblem(response.data.data);
                 setUserCode(response.data.data.initCode);
             } catch(error){
@@ -53,7 +55,7 @@ export const Question = () => {
             }
         }
         solveQuestion();
-    }, [])
+    }, [id])
     const [theme, setTheme] = useState('dark');
     const [runOutput, setRunOutput] = useState([]);
     const {token} = useSelector(state => state.auth);
@@ -96,7 +98,7 @@ export const Question = () => {
                             <span className='text-2xl cursor-pointer'><BsBookmarks/></span>
                         </div>
                         <div className='flex items-center gap-4'>
-                            <span className='text-caribbeangreen-200 bg-caribbeangreen-50/20 px-4 py-1 rounded-full'>{Problem && Problem.difficulty}</span>
+                            <span className={Problem?.difficulty === 'Easy' ? ('text-caribbeangreen-200 bg-caribbeangreen-50/20 px-4 py-1 rounded-full') : (Problem?.difficulty === 'Medium' ? ('text-yellow-200 bg-yellow-50/20 px-4 py-1 rounded-full') : ('text-pink-200 bg-pink-50/20 px-4 py-1 rounded-full'))}>{Problem && Problem.difficulty}</span>
                             <span className='text-2xl cursor-pointer'><PiThumbsUpThin/></span>
                             <span className='text-2xl cursor-pointer'><PiThumbsDownThin/></span>
                         </div>
