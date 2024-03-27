@@ -11,6 +11,7 @@
     "@uiw/codemirror-theme-dracula": "^4.21.20",
     "@uiw/codemirror-theme-okaidia": "^4.21.20",
     "@uiw/react-codemirror": "^4.21.20",
+    "axios": "^1.6.7",
     "chart.js": "^4.4.0",
     "concurrently": "^8.2.1",
     "framer-motion": "^10.16.4",
