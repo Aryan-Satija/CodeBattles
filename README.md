@@ -1,31 +1,32 @@
-# React & Tailwind CSS Starter Pack
+# Code Battles
 
-This is a starter pack for creating React projects with Tailwind CSS configured. It uses React version **18.2** and Tailwind CSS version **3.2**.
+## Features
 
-## Usage
+- Easy Login and Signup
+![WhatsApp Image 2024-02-12 at 01 05 39_d6600413](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/06c31898-c468-4d28-8c13-8e108bf0155e)
 
-This starter pack includes a basic setup for using **Tailwind CSS with React**. To start building your own components and styles, follow these steps:
+![WhatsApp Image 2024-02-12 at 01 34 05_00c12220](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/fb36e477-09cf-4514-bc99-a7b5bead3ff2)
 
-1. Clone the repository to your local machine.
-    ```sh
-    git clone https://github.com/thepranaygupta/react-tailwind-css-starter-pack.git
-    ```
 
-1. Install the required packages.
-    ```sh
-    cd react-tailwind-css-starter-pack
-    npm install
-    ```
+![WhatsApp Image 2024-02-12 at 01 34 29_d8b13b85](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/a2b65d26-acc5-44a6-b93b-0832f9ac5ee0)
 
-1. Start the development server.
-    ```sh
-    npm start
-    ```
-1. Open the project in your browser at [`http://localhost:3000`](http://localhost:3000) to view your project.
-1. Create your React components and add your styles using Tailwind classes. You can also create new CSS files and import them into your components.
+- Solve coding problems directly on the platform 
+![WhatsApp Image 2024-02-14 at 11 51 02_24c76ae8](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/05cd026d-2165-4121-a604-db4d8c011e54)
 
-The project is set up to use `postcss-cli` to process your CSS files. You can add your own `tailwind.config.js` file to customize your Tailwind setup.
+![WhatsApp Image 2024-02-14 at 12 36 42_8b06d8c9](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/be04f2f8-6d1f-43f7-8a31-44e9420c20cb)
 
-## Contributing
+- Wide variety of problems
 
-Contributions are welcome! If you have any suggestions or find any issues, please feel free to open an issue or a pull request.
+![WhatsApp Image 2024-02-14 at 12 27 55_6044f0b9](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/a7dd66e7-007a-4065-b070-cb6865d99c61)
+
+- Integrated Coding Environment
+
+![WhatsApp Image 2024-02-14 at 12 30 45_f1dce685](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/f24945cb-eb98-4098-bbf0-d713d2f535fc)
+
+- Create Courses (Instructors)
+
+![image](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/2d052225-a8d5-4002-92a7-5b06339c8ad5)
+
+- Buy and Enrol in courses (Students)
+
+![image](https://github.com/Aryan-Satija/CodeBattles/assets/124520942/550e2c50-758b-4918-bafb-5d371e04a5fb)
