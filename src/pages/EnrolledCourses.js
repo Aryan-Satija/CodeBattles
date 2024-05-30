@@ -17,6 +17,7 @@ const EnrolledCourses = () => {
     })
     async function fetchData(){
         try{
+            
             const response = await apiConnector(    "GET", 
                                                     SETTINGS.GET_ENROLLED_COURSES_API, 
                                                     null,
@@ -32,7 +33,7 @@ const EnrolledCourses = () => {
     }
     useEffect(()=>{
         fetchData();
-    }, [token]);
+    }, []);
   return (
     <div className='w-full min-h-screen'>
         {

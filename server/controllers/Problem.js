@@ -60,7 +60,14 @@ exports.bookmarkProblem = async(req, res)=>{
     try{
         const {id} = req.body;
         const userId = req.user.id;
-        User.findByIdAndUpdate(userId, {
+        const user = await User.findById(userId);
+        if(user.bookmarkedProblems.includes(id)){
+            return res.status(401).json({
+                success: false,
+                message: "Already Bookmarked"
+            })
+        }
+        await User.findByIdAndUpdate(userId, {
             $push:{
                 bookmarkedProblems:id
             }

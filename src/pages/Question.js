@@ -4,10 +4,11 @@ import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python'; 
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import {PiThumbsUpThin, PiThumbsDownThin} from 'react-icons/pi';
-import {BsBookmarks, BsPlay, BsCloudArrowUp} from 'react-icons/bs';
+import {BsBookmarks, BsBookmarksFill, BsPlay, BsCloudArrowUp} from 'react-icons/bs';
+import { AiFillLike, AiFillDislike  } from "react-icons/ai";
 import {TbSwitch3} from 'react-icons/tb';
 import { apiConnector } from '../services/apiConnector';
-import { Editor, Problems } from '../services/apis';
+import { Editor, Problems, SETTINGS } from '../services/apis';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
@@ -36,10 +37,11 @@ export const Question = () => {
     const {id} = useParams();
     const [Problem, setProblem] = useState(null); 
     const [userCode, setUserCode] = useState(null); 
+    const [vote, setVote] = useState(0);
+    const [isBookmarked, setIsBookmarked] = useState(false);
     useEffect(()=>{
         const solveQuestion = async()=>{
             try{
-                console.log(token);
                 const response = await apiConnector("POST", Problems.SOLVE_PROBLEM, 
                                 {
                                     id
@@ -54,7 +56,19 @@ export const Question = () => {
                 console.log(error.message);
             }
         }
-        solveQuestion();
+        const getUser = async(id)=>{
+            try{
+                const response = await apiConnector("GET", SETTINGS.GET_USER_DETAILS_API, null,
+                                {
+                                    Authorization : `Bearer ${token}`
+                                }) 
+                setIsBookmarked(response.data.data.bookmarkedProblems.includes(id));
+            } catch(error){
+                console.log(error.message);
+            }
+        }
+        solveQuestion()
+        getUser(id);
     }, [id])
     const [theme, setTheme] = useState('dark');
     const [runOutput, setRunOutput] = useState([]);
@@ -89,18 +103,52 @@ export const Question = () => {
             }
         )
     }
+    const bookmarkUtil = async()=>{
+        try{
+            const response = await apiConnector("POST", Problems.BOOKMARK_PROBLEM, {id: Problem._id}, {Authorization : `Bearer ${token}`})
+            console.log(response);
+            return true;
+        }catch(err){
+            return false;
+        }
+    }
+    const bookmarkProblem = async()=>{
+        await toast.promise(
+            new Promise(async(resolve, reject)=>{
+                if(await bookmarkUtil()){
+                    setIsBookmarked(true)
+                    resolve(1);
+                }            
+                else{
+                    const error = new Error("something went wrong");
+                    reject(error);
+                }
+            }),
+            {
+              pending: 'Loading',
+              success: 'Bookmarked Successfully',
+              error: 'Problem Already Bookmarked',
+            }
+        )
+    }
     return (
         <div className='mt-[5.25rem]'>
-            <div className='flex flex-col lg:flex-row item-center gap-2 px-2'>
-                    <div className='text-richblack-50 h-[610px] overflow-y-auto bg-[#282b37] pl-2 flex flex-col gap-y-4 items-start rounded-md pt-2 w-full min-w-[320px]'>
+            <div className='flex flex-col lg:flex-row items-center gap-2 px-2 justify-center'>
+                    <div className='text-richblack-50 min-h-[550px] overflow-y-auto bg-[#282b37] pl-2 flex flex-col gap-y-4 items-start rounded-md pt-2 w-[45%] min-w-[320px]'>
                         <div className='flex items-center gap-4'>
                             <p className='text-richblack-50 font-bold text-2xl'>{Problem?.name}</p>
-                            <span className='text-2xl cursor-pointer'><BsBookmarks/></span>
+                            <span className='text-2xl cursor-pointer' onClick={bookmarkProblem}>{
+                                (isBookmarked) ? (<BsBookmarksFill/>) : (<BsBookmarks/>)
+                            }</span>
                         </div>
                         <div className='flex items-center gap-4'>
                             <span className={Problem?.difficulty === 'Easy' ? ('text-caribbeangreen-200 bg-caribbeangreen-50/20 px-4 py-1 rounded-full') : (Problem?.difficulty === 'Medium' ? ('text-yellow-200 bg-yellow-50/20 px-4 py-1 rounded-full') : ('text-pink-200 bg-pink-50/20 px-4 py-1 rounded-full'))}>{Problem && Problem.difficulty}</span>
-                            <span className='text-2xl cursor-pointer'><PiThumbsUpThin/></span>
-                            <span className='text-2xl cursor-pointer'><PiThumbsDownThin/></span>
+                            <span className='text-2xl cursor-pointer' onClick={()=>{
+                                vote == 0 ? setVote(1) : setVote(vote-1);
+                            }}>{(vote == 1) ? <AiFillLike/> : <PiThumbsUpThin/>}</span>
+                            <span className='text-2xl cursor-pointer' onClick={()=>{
+                                vote == 0 ? setVote(2) : setVote(4 - (2*vote))
+                            }}>{(vote == 2) ? (<AiFillDislike/>) : (<PiThumbsDownThin/>)}</span>
                         </div>
                         <p className='text-richblack-200 text-md'>
                             {
@@ -121,14 +169,14 @@ export const Question = () => {
                             }
                         </div>
                     </div>
-                <div className='w-full'>
+                <div className='w-[50%] min-w-[320px] h-[550px]'>
                     <div className={theme === 'dark' ? `bg-richblack-800 h-4 rounded-tr-md rounded-tl-md` : `bg-richblack-50 h-4 rounded-tr-md rounded-tl-md`}></div>
                     {
                         userCode && 
                         runOutput.length == 0 ? (<CodeMirror
                                 style={{borderRadius: '10px'}}
                                 value={userCode}
-                                height={"580px"}
+                                height={"520px"}
                                 theme={theme === 'dark' ? dracula : 'light'}
                                 mode = "python"
                                 extensions={[javascript({ jsx: true }), python({py: true})]}
@@ -153,7 +201,7 @@ export const Question = () => {
                     <div className={theme === 'dark' ? `bg-richblack-800 h-4 rounded-br-md rounded-bl-md` : `bg-richblack-50 h-4 rounded-br-md rounded-bl-md`}></div>
                 </div>
             </div>
-            <div className='pr-2 flex gap-4 items-center justify-end mt-2 flex-col sm:flex-row'>
+            <div className='pr-12 pt-8 flex gap-4 items-center justify-end flex-col sm:flex-row'>
                 <div onClick={()=>{
                                     if(runOutput.length === 0)
                                         run();

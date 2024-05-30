@@ -28,8 +28,8 @@ function Login(){
                 'email': formData.email,
                 'password': formData.password
             });
-            dispatch(setToken(JSON.stringify(response.data.token)));
-            localStorage.setItem("token", JSON.stringify(response.data.token));
+            dispatch(setToken(response.data.token));
+            localStorage.setItem("token", response.data.token);
             localStorage.setItem("user",  JSON.stringify(response.data.user));
             dispatch(setUser(response.data.user));
             toast.success(`Welcome ${response.data.user.firstName}`, {

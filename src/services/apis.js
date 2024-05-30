@@ -36,5 +36,6 @@ export const Editor = {
 }
 export const Problems = {
     VIEW_PROBLEMS : BASE_URL + '/problem/view',
-    SOLVE_PROBLEM : BASE_URL + '/problem/solve'
+    SOLVE_PROBLEM : BASE_URL + '/problem/solve',
+    BOOKMARK_PROBLEM : BASE_URL + '/problem/bookmark'
 }

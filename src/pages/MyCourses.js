@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setCourse } from '../slices/courseSlice';
 export const MyCourses = () => {
     const [courses, setCourses] = useState([]);
+    console.log(courses);
     const {user} = useSelector(state => state.profile);
     const {token} = useSelector(state => state.auth);
     const navigate = useNavigate();
